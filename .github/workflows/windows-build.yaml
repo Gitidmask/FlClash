@@ -1,6 +1,9 @@
 name: windows-build
 
 on:
+  push:
+    tags:
+      - 'windows-build-*'
   workflow_dispatch:
 
 permissions:
