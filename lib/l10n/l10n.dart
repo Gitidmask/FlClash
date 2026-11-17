@@ -2851,10 +2851,10 @@ class AppLocalizations {
     );
   }
 
-  /// `Clear`
+  /// `System default`
   String get interfaceNameModeClear {
     return Intl.message(
-      'Clear',
+      'System default',
       name: 'interfaceNameModeClear',
       desc: '',
       args: [],
@@ -2886,6 +2886,46 @@ class AppLocalizations {
     return Intl.message(
       'Interface name',
       name: 'interfaceName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select a network interface`
+  String get networkInterfaceNotSelected {
+    return Intl.message(
+      'Select a network interface',
+      name: 'networkInterfaceNotSelected',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Network interface is unavailable: {name}`
+  String networkInterfaceUnavailable(Object name) {
+    return Intl.message(
+      'Network interface is unavailable: $name',
+      name: 'networkInterfaceUnavailable',
+      desc: '',
+      args: [name],
+    );
+  }
+
+  /// `Enter name manually`
+  String get networkInterfaceManual {
+    return Intl.message(
+      'Enter name manually',
+      name: 'networkInterfaceManual',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Rescan interfaces`
+  String get networkInterfaceRefresh {
+    return Intl.message(
+      'Rescan interfaces',
+      name: 'networkInterfaceRefresh',
       desc: '',
       args: [],
     );
@@ -7663,8 +7703,7 @@ class AppLocalizations {
   String customImportDroppedSubRules(num count, Object label) {
     return Intl.plural(
       count,
-      one:
-          '1 SUB-RULE rule was dropped, since custom profiles do not support sub-rules',
+      one: '1 SUB-RULE rule was dropped, since custom profiles do not support sub-rules',
       other:
           '$label SUB-RULE rules were dropped, since custom profiles do not support sub-rules',
       name: 'customImportDroppedSubRules',

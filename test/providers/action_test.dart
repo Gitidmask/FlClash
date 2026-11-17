@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:io';
 
+import 'package:fl_clash/common/network.dart';
 import 'package:fl_clash/core/controller.dart';
 import 'package:fl_clash/core/desktop/model.dart';
 import 'package:fl_clash/core/interface.dart';
@@ -18,10 +20,16 @@ import 'package:mocktail/mocktail.dart';
 import 'package:riverpod/riverpod.dart';
 
 import '../helpers/test_profiles.dart';
+import '../helpers/network_interfaces.dart';
 
 class _MockCoreHandlerInterface extends Mock implements CoreHandlerInterface {}
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+  setUpAll(() async {
+    await AppLocalizations.load(const Locale('en'));
+  });
+
   group('ProfilesAction', () {
     test('keeps edited profile data when remote update fails', () async {
       final original = Profile.normal(label: 'old label', url: 'bad-url');
@@ -305,6 +313,71 @@ void main() {
     });
 
     test(
+      'startCore refuses an unavailable selected Windows interface',
+      () async {
+        final previousLister = listNetworkInterfaces;
+        addTearDown(() => listNetworkInterfaces = previousLister);
+        listNetworkInterfaces = ({bool includeLoopback = false}) async => [
+          testNetworkInterface('WLAN', addresses: ['192.168.1.20']),
+        ];
+        final container = ProviderContainer(
+          overrides: [coreActionProvider.overrideWith(_TestCoreAction.new)],
+        );
+        addTearDown(container.dispose);
+        container
+            .read(patchClashConfigProvider.notifier)
+            .update(
+              (state) => state.copyWith(
+                interfaceNameMode: InterfaceNameMode.custom,
+                interfaceName: 'Offline',
+              ),
+            );
+        final coreAction =
+            container.read(coreActionProvider.notifier) as _TestCoreAction;
+
+        await coreAction.startCore();
+
+        expect(coreAction.startLifecycleCount, 0);
+        expect(container.read(coreStatusProvider), CoreStatus.disconnected);
+      },
+      skip: !Platform.isWindows ? 'Windows-only interface binding' : false,
+    );
+
+    test(
+      'restartCore refuses an unavailable selected Windows interface',
+      () async {
+        final previousLister = listNetworkInterfaces;
+        addTearDown(() => listNetworkInterfaces = previousLister);
+        listNetworkInterfaces = ({bool includeLoopback = false}) async => [
+          testNetworkInterface('WLAN', addresses: ['192.168.1.20']),
+        ];
+        final container = ProviderContainer(
+          overrides: [
+            coreActionProvider.overrideWith(_TestCoreAction.new),
+            setupActionProvider.overrideWith(_TestSetupAction.new),
+          ],
+        );
+        addTearDown(container.dispose);
+        container
+            .read(patchClashConfigProvider.notifier)
+            .update(
+              (state) => state.copyWith(
+                interfaceNameMode: InterfaceNameMode.custom,
+                interfaceName: 'Offline',
+              ),
+            );
+        final coreAction =
+            container.read(coreActionProvider.notifier) as _TestCoreAction;
+
+        final restarted = await coreAction.restartCore();
+
+        expect(restarted, isFalse);
+        expect(coreAction.lifecycleRestartCount, 0);
+      },
+      skip: !Platform.isWindows ? 'Windows-only interface binding' : false,
+    );
+
+    test(
       'restores the started state after restarting a running core',
       () async {
         final container = ProviderContainer(
@@ -536,6 +609,51 @@ void main() {
   });
 
   group('SetupAction', () {
+    test(
+      'refuses an unavailable Windows interface before authorization',
+      () async {
+        final previousLister = listNetworkInterfaces;
+        addTearDown(() => listNetworkInterfaces = previousLister);
+        listNetworkInterfaces = ({bool includeLoopback = false}) async => [
+          testNetworkInterface('WLAN', addresses: ['192.168.1.20']),
+        ];
+        late _AuthorizationSetupAction setupAction;
+        late _RestartRecordingCoreAction coreAction;
+        final container = ProviderContainer(
+          overrides: [
+            currentProfileProvider.overrideWithValue(null),
+            setupActionProvider.overrideWith(() {
+              setupAction = _AuthorizationSetupAction([AuthorizeCode.success]);
+              return setupAction;
+            }),
+            coreActionProvider.overrideWith(() {
+              coreAction = _RestartRecordingCoreAction();
+              return coreAction;
+            }),
+          ],
+        );
+        addTearDown(container.dispose);
+        container
+            .read(patchClashConfigProvider.notifier)
+            .update(
+              (state) => state.copyWith(
+                tun: state.tun.copyWith(enable: true),
+                interfaceNameMode: InterfaceNameMode.custom,
+                interfaceName: 'Offline',
+              ),
+            );
+        container.read(setupActionProvider);
+        container.read(coreActionProvider);
+
+        final applied = await setupAction.applyProfile(force: true);
+
+        expect(applied, isFalse);
+        expect(setupAction.authorizationRequestCount, 0);
+        expect(coreAction.restartCount, 0);
+      },
+      skip: !Platform.isWindows ? 'Windows-only interface binding' : false,
+    );
+
     group('rapid status changes', () {
       test('updates runtime and traffic while core start is pending', () async {
         final startCompleter = Completer<bool>();
@@ -882,6 +1000,7 @@ void main() {
 }
 
 class _TestCoreAction extends CoreAction {
+  int startLifecycleCount = 0;
   int lifecycleRestartCount = 0;
   int initCoreCount = 0;
   Completer<CoreLifecycleResult>? restartCompleter;
@@ -895,6 +1014,7 @@ class _TestCoreAction extends CoreAction {
 
   @override
   Future<CoreLifecycleResult> startLifecycle() {
+    startLifecycleCount++;
     return startCompleter?.future ?? Future.value(startResult);
   }
 

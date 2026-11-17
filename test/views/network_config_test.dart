@@ -15,6 +15,7 @@ import 'package:prism_ui/prism_ui.dart';
 import '../helpers/test_app.dart';
 import '../helpers/test_profiles.dart';
 import '../helpers/host_scaffold.dart';
+import '../helpers/network_interfaces.dart';
 
 class _ToggleCase {
   final String name;
@@ -160,6 +161,78 @@ void main() {
         target,
       );
     });
+
+    testWidgets('the interface name picker writes a detected adapter', (
+      tester,
+    ) async {
+      final previousLister = listNetworkInterfaces;
+      addTearDown(() => listNetworkInterfaces = previousLister);
+      listNetworkInterfaces = ({bool includeLoopback = false}) async => [
+        testNetworkInterface('WLAN', addresses: ['192.168.1.20']),
+        testNetworkInterface('Ethernet', addresses: ['10.0.0.20']),
+      ];
+      container
+          .read(patchClashConfigProvider.notifier)
+          .update(
+            (state) =>
+                state.copyWith(interfaceNameMode: InterfaceNameMode.custom),
+          );
+
+      await pumpItem(tester, const InterfaceNameItem());
+      await tester.tap(find.byType(ListRow).first);
+      await tester.pumpAndSettle();
+
+      expect(find.textContaining('WLAN'), findsWidgets);
+      await tester.tap(find.textContaining('WLAN').last);
+      await tester.pumpAndSettle();
+
+      final config = container.read(patchClashConfigProvider);
+      expect(config.interfaceNameMode, InterfaceNameMode.custom);
+      expect(config.interfaceName, 'WLAN');
+    });
+
+    testWidgets('the interface name picker marks a missing adapter', (
+      tester,
+    ) async {
+      final previousLister = listNetworkInterfaces;
+      addTearDown(() => listNetworkInterfaces = previousLister);
+      listNetworkInterfaces = ({bool includeLoopback = false}) async => [
+        testNetworkInterface('WLAN', addresses: ['192.168.1.20']),
+      ];
+      container
+          .read(patchClashConfigProvider.notifier)
+          .update(
+            (state) => state.copyWith(
+              interfaceNameMode: InterfaceNameMode.custom,
+              interfaceName: 'Offline',
+            ),
+          );
+
+      await pumpItem(tester, const InterfaceNameItem());
+
+      expect(
+        find.textContaining('Network interface is unavailable: Offline'),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('the interface name picker offers manual entry and refresh', (
+      tester,
+    ) async {
+      final previousLister = listNetworkInterfaces;
+      addTearDown(() => listNetworkInterfaces = previousLister);
+      listNetworkInterfaces = ({bool includeLoopback = false}) async => [
+        testNetworkInterface('WLAN', addresses: ['192.168.1.20']),
+      ];
+
+      await pumpItem(tester, const InterfaceNameItem());
+      await tester.tap(find.byType(ListRow).first);
+      await tester.pumpAndSettle();
+
+      final localizations = currentAppLocalizations;
+      expect(find.text(localizations.networkInterfaceManual), findsOneWidget);
+      expect(find.text(localizations.networkInterfaceRefresh), findsOneWidget);
+    });
   });
 
   group('network options items', () {
@@ -294,7 +367,7 @@ void main() {
 
 String _interfaceNameModeLabel(InterfaceNameMode mode) {
   return switch (mode) {
-    InterfaceNameMode.clear => 'Clear',
+    InterfaceNameMode.clear => 'System default',
     InterfaceNameMode.follow => 'Follow config',
     InterfaceNameMode.custom => 'Custom',
   };

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:fl_clash/common/common.dart';
@@ -206,18 +207,119 @@ class InterfaceNameModeItem extends ConsumerWidget {
   }
 }
 
-class InterfaceNameItem extends ConsumerWidget {
+class InterfaceNameItem extends ConsumerStatefulWidget {
   const InterfaceNameItem({super.key});
 
   @override
-  Widget build(BuildContext context, ref) {
-    return ConfigTextItem(
-      title: (l) => l.interfaceName,
-      maxLength: TextInputLimits.name,
-      selector: patchClashConfigProvider.select((state) => state.interfaceName),
-      onChanged: _tunWriter(
-        (state, value) => state.copyWith(interfaceName: value.trim()),
+  ConsumerState<InterfaceNameItem> createState() => _InterfaceNameItemState();
+}
+
+class _InterfaceNameItemState extends ConsumerState<InterfaceNameItem> {
+  static const _manualOption = '\u0000manual';
+  static const _refreshOption = '\u0000refresh';
+
+  late Future<List<NetworkInterface>> _interfaces;
+
+  @override
+  void initState() {
+    super.initState();
+    _interfaces = getNetworkInterfaces();
+  }
+
+  void _refreshInterfaces() {
+    setState(() {
+      _interfaces = getNetworkInterfaces();
+    });
+  }
+
+  void _setInterface(String name) {
+    ref
+        .read(patchClashConfigProvider.notifier)
+        .update(
+          (state) => state.copyWith(
+            interfaceNameMode: InterfaceNameMode.custom,
+            interfaceName: name.trim(),
+          ),
+        );
+  }
+
+  Future<void> _editInterface(String current) async {
+    final appLocalizations = context.appLocalizations;
+    final value = await dialogs.showCommonDialog<String>(
+      child: InputDialog(
+        title: appLocalizations.interfaceName,
+        value: current,
+        labelText: appLocalizations.interfaceName,
+        inputFormatters: TextInputLimits.limit(TextInputLimits.name),
+        validator: (value) {
+          return value == null || value.trim().isEmpty
+              ? appLocalizations.emptyTip(appLocalizations.interfaceName)
+              : null;
+        },
       ),
+    );
+    if (!mounted || value == null) {
+      return;
+    }
+    _setInterface(value);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final selected = ref.watch(
+      patchClashConfigProvider.select((state) => state.interfaceName),
+    );
+    return FutureBuilder(
+      future: _interfaces,
+      builder: (context, snapshot) {
+        final interfaces = snapshot.data ?? const <NetworkInterface>[];
+        final appLocalizations = context.appLocalizations;
+        final options =
+            {
+                for (final interface in interfaces) interface.name,
+                if (selected.isNotEmpty) selected,
+              }.toList()
+              ..sort((a, b) => a.toLowerCase().compareTo(b.toLowerCase()))
+              ..addAll([_manualOption, _refreshOption]);
+        return ConfigOptionsItem<String>(
+          title: (l) => l.interfaceName,
+          options: options,
+          textBuilder: (name) {
+            if (name == _manualOption) {
+              return appLocalizations.networkInterfaceManual;
+            }
+            if (name == _refreshOption) {
+              return appLocalizations.networkInterfaceRefresh;
+            }
+            if (name.isEmpty) {
+              return appLocalizations.networkInterfaceNotSelected;
+            }
+            for (final interface in interfaces) {
+              if (interface.name == name) {
+                return networkInterfaceLabel(interface);
+              }
+            }
+            if (name == selected) {
+              return appLocalizations.networkInterfaceUnavailable(name);
+            }
+            return name;
+          },
+          selector: patchClashConfigProvider.select(
+            (state) => state.interfaceName,
+          ),
+          onChanged: (_, value) {
+            if (value == _manualOption) {
+              unawaited(_editInterface(selected));
+              return;
+            }
+            if (value == _refreshOption) {
+              _refreshInterfaces();
+              return;
+            }
+            _setInterface(value);
+          },
+        );
+      },
     );
   }
 }

@@ -10,6 +10,40 @@ NetworkInterfaceLister listNetworkInterfaces =
     ({bool includeLoopback = false}) =>
         NetworkInterface.list(includeLoopback: includeLoopback);
 
+Future<List<NetworkInterface>> getNetworkInterfaces() async {
+  final interfaces = await listNetworkInterfaces(includeLoopback: false);
+  return interfaces.where((interface) {
+      return interface.name.trim().isNotEmpty &&
+          interface.addresses.any(_isUsableAddress);
+    }).toList()
+    ..sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
+}
+
+bool _isUsableAddress(InterfaceAddress address) {
+  final value = address.address.toLowerCase();
+  final ip = InternetAddress.tryParse(value);
+  return ip != null &&
+      !ip.isLoopback &&
+      !value.startsWith('169.254.') &&
+      !value.startsWith('fe80:') &&
+      value != '0.0.0.0' &&
+      value != '::';
+}
+
+String networkInterfaceLabel(NetworkInterface interface) {
+  for (final address in interface.addresses) {
+    if (_isUsableAddress(address) && address.type == InternetAddressType.IPv4) {
+      return '${interface.name} (${address.address})';
+    }
+  }
+  for (final address in interface.addresses) {
+    if (_isUsableAddress(address)) {
+      return '${interface.name} (${address.address})';
+    }
+  }
+  return interface.name;
+}
+
 extension NetworkInterfaceExt on NetworkInterface {
   bool get isWifi {
     final nameLowCase = name.toLowerCase();

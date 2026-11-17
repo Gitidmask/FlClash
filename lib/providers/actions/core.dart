@@ -1,5 +1,21 @@
 part of '../action.dart';
 
+Future<String?> _windowsInterfaceError(PatchClashConfig config) async {
+  if (!system.isWindows ||
+      config.interfaceNameMode != InterfaceNameMode.custom) {
+    return null;
+  }
+  final interfaceName = config.interfaceName.trim();
+  if (interfaceName.isEmpty) {
+    return currentAppLocalizations.networkInterfaceNotSelected;
+  }
+  final interfaces = await getNetworkInterfaces();
+  if (interfaces.any((interface) => interface.name == interfaceName)) {
+    return null;
+  }
+  return currentAppLocalizations.networkInterfaceUnavailable(interfaceName);
+}
+
 @Riverpod(keepAlive: true)
 class CoreAction extends _$CoreAction {
   CoreController get _core => ref.read(coreHandlerProvider);
@@ -25,6 +41,12 @@ class CoreAction extends _$CoreAction {
   Future<void> startCore() async {
     ref.read(coreStatusProvider.notifier).value = CoreStatus.connecting;
     try {
+      final interfaceError = await windowsInterfaceError();
+      if (interfaceError != null) {
+        ref.read(coreStatusProvider.notifier).value = CoreStatus.disconnected;
+        dialogs.showBanner(interfaceError, level: BannerLevel.error);
+        return;
+      }
       final result = await startLifecycle();
       await _applyLifecycleResult(result);
     } catch (error) {
@@ -108,8 +130,18 @@ class CoreAction extends _$CoreAction {
     return operation;
   }
 
+  @protected
+  Future<String?> windowsInterfaceError() {
+    return _windowsInterfaceError(ref.read(patchClashConfigProvider));
+  }
+
   Future<bool> _runRestartWorker() async {
     try {
+      final interfaceError = await windowsInterfaceError();
+      if (interfaceError != null) {
+        dialogs.showBanner(interfaceError, level: BannerLevel.error);
+        return false;
+      }
       ref.read(coreStatusProvider.notifier).value = CoreStatus.connecting;
       final result = await restartLifecycle();
       if (!await _applyLifecycleResult(result, statusFirst: true)) {

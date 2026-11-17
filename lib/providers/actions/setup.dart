@@ -722,6 +722,12 @@ class SetupAction extends _$SetupAction {
     Future<void> Function()? preloadInvoke,
     FutureOr Function()? onUpdated,
   }) async {
+    final patchConfig = ref.read(patchClashConfigProvider);
+    final interfaceError = await _windowsInterfaceError(patchConfig);
+    if (interfaceError != null) {
+      dialogs.showBanner(interfaceError, level: BannerLevel.error);
+      return _SetupTaskResult.failed;
+    }
     var profile = ref.read(currentProfileProvider) ?? recoverMissingProfile();
     // A refresh failure is surfaced by safeRun; setup keeps the old profile.
     final nextProfile = await globalState.safeRun(
@@ -734,7 +740,6 @@ class SetupAction extends _$SetupAction {
       ref.read(profilesProvider.notifier).put(nextProfile);
     }
     commonPrint.log('setup ===> ${profile?.realLabel}');
-    final patchConfig = ref.read(patchClashConfigProvider);
     final shouldContinueSetup = await requestAdmin(patchConfig.tun.enable);
     if (!shouldContinueSetup) {
       return _SetupTaskResult.handoffToCoreRestart;

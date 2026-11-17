@@ -71,6 +71,33 @@ void main() {
     expect(_v6('fe80::1').isIPv4, isFalse);
   });
 
+  group('getNetworkInterfaces', () {
+    test('filters unusable addresses and sorts by name', () async {
+      listing([
+        _FakeInterface('WLAN', [_v4('192.168.1.20')]),
+        _FakeInterface('empty', const []),
+        _FakeInterface('link-local', [_v6('fe80::1')]),
+        _FakeInterface('Ethernet', [_v4('10.0.0.20')]),
+      ]);
+
+      final interfaces = await getNetworkInterfaces();
+
+      expect(interfaces.map((interface) => interface.name), [
+        'Ethernet',
+        'WLAN',
+      ]);
+    });
+
+    test('labels an interface with its preferred IPv4 address', () {
+      final interface = _FakeInterface('WLAN', [
+        _v6('2001:db8::1'),
+        _v4('192.168.1.20'),
+      ]);
+
+      expect(networkInterfaceLabel(interface), 'WLAN (192.168.1.20)');
+    });
+  });
+
   group('getLocalIpAddress', () {
     test('prefers a wireless interface over a wired one', () async {
       listing([
