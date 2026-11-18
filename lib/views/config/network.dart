@@ -557,19 +557,25 @@ List<Widget> outboundItems({required bool isDesktop, required bool isLinux}) {
 List<Widget> networkOptionsItems({
   required bool isDesktop,
   required bool isMacOS,
+  required bool isWindows,
   required bool isCustomInterfaceName,
 }) {
   return [
     if (isDesktop) const TUNItem(),
     if (isMacOS) const AutoSetSystemDnsItem(),
     const TunStackItem(),
+    if (isDesktop && !isWindows)
+      ...interfaceSelectionItems(isCustomInterfaceName: isCustomInterfaceName),
+  ];
+}
+
+List<Widget> interfaceSelectionItems({required bool isCustomInterfaceName}) {
+  return [
     // mihomo's DefaultSocketHook ignores interface-name on Android
     // (core/lib.go installHooks, vendored dialer.go), so these rows only
     // apply on desktop.
-    if (isDesktop) ...[
-      const InterfaceNameModeItem(),
-      if (isCustomInterfaceName) const InterfaceNameItem(),
-    ],
+    const InterfaceNameModeItem(),
+    if (isCustomInterfaceName) const InterfaceNameItem(),
   ];
 }
 
@@ -638,9 +644,37 @@ class NetworkOptionsSection extends ConsumerWidget {
       items: networkOptionsItems(
         isDesktop: system.isDesktop,
         isMacOS: system.isMacOS,
+        isWindows: system.isWindows,
         isCustomInterfaceName: isCustomInterfaceName,
       ),
       footer: system.isDesktop ? appLocalizations.tunDesc : null,
+    );
+  }
+}
+
+class OutboundInterfaceView extends ConsumerWidget {
+  const OutboundInterfaceView({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isCustomInterfaceName = ref.watch(
+      patchClashConfigProvider.select(
+        (state) => state.interfaceNameMode == InterfaceNameMode.custom,
+      ),
+    );
+    return ListView(
+      padding: const EdgeInsets.symmetric(horizontal: 16).copyWith(
+        top: context.sectionsTopPadding,
+        bottom: 16 + context.bottomInset,
+      ),
+      children: [
+        generateSection(
+          title: context.appLocalizations.options,
+          items: interfaceSelectionItems(
+            isCustomInterfaceName: isCustomInterfaceName,
+          ),
+        ),
+      ],
     );
   }
 }

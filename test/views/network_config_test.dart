@@ -238,11 +238,13 @@ void main() {
   group('network options items', () {
     List<Type> types({
       required bool isDesktop,
+      bool isWindows = false,
       bool isCustomInterfaceName = true,
     }) {
       return networkOptionsItems(
         isDesktop: isDesktop,
         isMacOS: false,
+        isWindows: isWindows,
         isCustomInterfaceName: isCustomInterfaceName,
       ).map((item) => item.runtimeType).toList();
     }
@@ -262,6 +264,18 @@ void main() {
         types(isDesktop: true, isCustomInterfaceName: false),
         isNot(contains(InterfaceNameItem)),
       );
+    });
+
+    test('Windows moves interface rows out of advanced network settings', () {
+      final types = networkOptionsItems(
+        isDesktop: true,
+        isMacOS: false,
+        isWindows: true,
+        isCustomInterfaceName: true,
+      ).map((item) => item.runtimeType);
+
+      expect(types, isNot(contains(InterfaceNameModeItem)));
+      expect(types, isNot(contains(InterfaceNameItem)));
     });
   });
 

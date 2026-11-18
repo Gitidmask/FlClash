@@ -8,6 +8,7 @@ import 'package:fl_clash/views/about.dart';
 import 'package:fl_clash/views/access.dart';
 import 'package:fl_clash/views/backup_and_restore.dart';
 import 'package:fl_clash/views/config/general.dart';
+import 'package:fl_clash/views/config/network.dart';
 import 'package:fl_clash/views/hotkey.dart';
 import 'package:fl_clash/widgets/widgets.dart';
 import 'package:flutter/widgets.dart';
@@ -61,6 +62,13 @@ class _ToolViewState extends ConsumerState<ToolsView> {
     );
   }
 
+  Widget _getNetworkList() {
+    return generateSection(
+      title: context.appLocalizations.network,
+      items: const [_OutboundInterfaceItem()],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final developerMode = ref.watch(
@@ -79,6 +87,7 @@ class _ToolViewState extends ConsumerState<ToolsView> {
         },
       ),
       _getSettingList(),
+      if (system.isWindows) _getNetworkList(),
       _getOtherList(developerMode),
     ];
     return Scaffold(
@@ -203,6 +212,34 @@ class _AdvancedConfigItem extends StatelessWidget {
       leading: const GlyphIcon(AppGlyphs.wrench),
       title: Text(context.appLocalizations.advancedConfig),
       widget: const AdvancedConfigView(),
+    );
+  }
+}
+
+class _OutboundInterfaceItem extends ConsumerWidget {
+  const _OutboundInterfaceItem();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final config = ref.watch(patchClashConfigProvider);
+    final appLocalizations = context.appLocalizations;
+    final subtitle = switch (config.interfaceNameMode) {
+      InterfaceNameMode.clear => appLocalizations.interfaceNameModeClear,
+      InterfaceNameMode.follow => appLocalizations.interfaceNameModeFollow,
+      InterfaceNameMode.custom when config.interfaceName.trim().isEmpty =>
+        appLocalizations.networkInterfaceNotSelected,
+      InterfaceNameMode.custom =>
+        '${appLocalizations.interfaceNameModeCustom} · '
+            '${config.interfaceName.trim()}',
+    };
+    return ListItem.open(
+      leading: const GlyphIcon(AppGlyphs.shuffle),
+      title: Text(appLocalizations.interfaceNameMode),
+      subtitle: Text(subtitle),
+      widget: BaseScaffold(
+        title: appLocalizations.interfaceNameMode,
+        body: const OutboundInterfaceView(),
+      ),
     );
   }
 }
