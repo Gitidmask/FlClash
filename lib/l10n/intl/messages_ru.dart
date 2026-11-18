@@ -2145,6 +2145,71 @@ class MessageLookup extends MessageLookupByLibrary {
     "systemProxy": MessageLookupByLibrary.simpleMessage("Системный прокси"),
     "tab": MessageLookupByLibrary.simpleMessage("Вкладки"),
     "tabAnimation": MessageLookupByLibrary.simpleMessage("Анимация вкладок"),
+    "tailscale": MessageLookupByLibrary.simpleMessage("Tailscale"),
+    "tailscaleAcceptRoutes": MessageLookupByLibrary.simpleMessage(
+      "Принимать маршруты подсетей",
+    ),
+    "tailscaleAuthKey": MessageLookupByLibrary.simpleMessage(
+      "Ключ авторизации",
+    ),
+    "tailscaleBackendState": MessageLookupByLibrary.simpleMessage(
+      "Состояние бэкенда",
+    ),
+    "tailscaleControl": MessageLookupByLibrary.simpleMessage("Управление"),
+    "tailscaleControlServer": MessageLookupByLibrary.simpleMessage(
+      "Сервер управления",
+    ),
+    "tailscaleEphemeral": MessageLookupByLibrary.simpleMessage(
+      "Временный узел",
+    ),
+    "tailscaleExitNode": MessageLookupByLibrary.simpleMessage("Выходной узел"),
+    "tailscaleExitNodeAllowLan": MessageLookupByLibrary.simpleMessage(
+      "Разрешить доступ к локальной сети",
+    ),
+    "tailscaleFollowGlobalInterface": MessageLookupByLibrary.simpleMessage(
+      "Использовать глобальный интерфейс",
+    ),
+    "tailscaleHealth": MessageLookupByLibrary.simpleMessage("Состояние"),
+    "tailscaleInfo": MessageLookupByLibrary.simpleMessage("Информация"),
+    "tailscaleLimitationsDescription": MessageLookupByLibrary.simpleMessage(
+      "Входящие службы, привязанные к интерфейсу Tailscale, по-прежнему требуют системный клиент Tailscale.",
+    ),
+    "tailscaleLogin": MessageLookupByLibrary.simpleMessage("Войти"),
+    "tailscaleLoginRequired": MessageLookupByLibrary.simpleMessage(
+      "Требуется вход",
+    ),
+    "tailscaleLoginUrl": MessageLookupByLibrary.simpleMessage("URL входа"),
+    "tailscaleLogout": MessageLookupByLibrary.simpleMessage("Выйти"),
+    "tailscaleMagicDns": MessageLookupByLibrary.simpleMessage("MagicDNS"),
+    "tailscaleNetworkDescription": MessageLookupByLibrary.simpleMessage(
+      "Управляющий и пиринговый трафик Tailscale использует выбранный интерфейс.",
+    ),
+    "tailscaleNoHealthIssues": MessageLookupByLibrary.simpleMessage(
+      "Проблем нет",
+    ),
+    "tailscaleNodeAddress": MessageLookupByLibrary.simpleMessage(
+      "Адрес Tailscale",
+    ),
+    "tailscaleNotConfigured": MessageLookupByLibrary.simpleMessage(
+      "Не настроено",
+    ),
+    "tailscaleRouteTailnet": MessageLookupByLibrary.simpleMessage(
+      "Маршрутизировать трафик Tailnet",
+    ),
+    "tailscaleRoutingDescription": MessageLookupByLibrary.simpleMessage(
+      "Адреса Tailnet используют этот прокси, остальные правила профиля не меняются.",
+    ),
+    "tailscaleStateDirectory": MessageLookupByLibrary.simpleMessage(
+      "Каталог состояния",
+    ),
+    "tailscaleStatus": MessageLookupByLibrary.simpleMessage("Статус"),
+    "tailscaleUdp": MessageLookupByLibrary.simpleMessage("UDP"),
+    "tailscaleUserspaceDescription": MessageLookupByLibrary.simpleMessage(
+      "Tailscale работает внутри FlClash Core без создания системного адаптера Tailscale.",
+    ),
+    "tailscaleWaitingForCore": MessageLookupByLibrary.simpleMessage(
+      "Ожидание Core",
+    ),
     "tapIconToRetry": MessageLookupByLibrary.simpleMessage(
       "Нажмите на значок, чтобы повторить",
     ),

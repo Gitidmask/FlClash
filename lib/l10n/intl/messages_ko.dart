@@ -1720,6 +1720,53 @@ class MessageLookup extends MessageLookupByLibrary {
     "systemProxy": MessageLookupByLibrary.simpleMessage("시스템 프록시"),
     "tab": MessageLookupByLibrary.simpleMessage("탭"),
     "tabAnimation": MessageLookupByLibrary.simpleMessage("탭 애니메이션"),
+    "tailscale": MessageLookupByLibrary.simpleMessage("Tailscale"),
+    "tailscaleAcceptRoutes": MessageLookupByLibrary.simpleMessage("서브넷 경로 수락"),
+    "tailscaleAuthKey": MessageLookupByLibrary.simpleMessage("인증 키"),
+    "tailscaleBackendState": MessageLookupByLibrary.simpleMessage("백엔드 상태"),
+    "tailscaleControl": MessageLookupByLibrary.simpleMessage("제어"),
+    "tailscaleControlServer": MessageLookupByLibrary.simpleMessage("제어 서버"),
+    "tailscaleEphemeral": MessageLookupByLibrary.simpleMessage("임시 노드"),
+    "tailscaleExitNode": MessageLookupByLibrary.simpleMessage("출구 노드"),
+    "tailscaleExitNodeAllowLan": MessageLookupByLibrary.simpleMessage(
+      "LAN 액세스 허용",
+    ),
+    "tailscaleFollowGlobalInterface": MessageLookupByLibrary.simpleMessage(
+      "전역 인터페이스 따르기",
+    ),
+    "tailscaleHealth": MessageLookupByLibrary.simpleMessage("상태 검사"),
+    "tailscaleInfo": MessageLookupByLibrary.simpleMessage("정보"),
+    "tailscaleLimitationsDescription": MessageLookupByLibrary.simpleMessage(
+      "Tailscale 인터페이스에 바인딩하는 인바운드 서비스는 여전히 시스템 Tailscale 클라이언트가 필요합니다.",
+    ),
+    "tailscaleLogin": MessageLookupByLibrary.simpleMessage("로그인"),
+    "tailscaleLoginRequired": MessageLookupByLibrary.simpleMessage("로그인 필요"),
+    "tailscaleLoginUrl": MessageLookupByLibrary.simpleMessage("로그인 URL"),
+    "tailscaleLogout": MessageLookupByLibrary.simpleMessage("로그아웃"),
+    "tailscaleMagicDns": MessageLookupByLibrary.simpleMessage("MagicDNS"),
+    "tailscaleNetworkDescription": MessageLookupByLibrary.simpleMessage(
+      "Tailscale 제어 및 피어 트래픽은 선택한 인터페이스를 사용합니다.",
+    ),
+    "tailscaleNoHealthIssues": MessageLookupByLibrary.simpleMessage("문제 없음"),
+    "tailscaleNodeAddress": MessageLookupByLibrary.simpleMessage(
+      "Tailscale 주소",
+    ),
+    "tailscaleNotConfigured": MessageLookupByLibrary.simpleMessage("구성되지 않음"),
+    "tailscaleRouteTailnet": MessageLookupByLibrary.simpleMessage(
+      "Tailnet 트래픽 라우팅",
+    ),
+    "tailscaleRoutingDescription": MessageLookupByLibrary.simpleMessage(
+      "Tailnet 대상은 이 프록시를 사용하며 프로필의 다른 규칙은 변경되지 않습니다.",
+    ),
+    "tailscaleStateDirectory": MessageLookupByLibrary.simpleMessage("상태 디렉터리"),
+    "tailscaleStatus": MessageLookupByLibrary.simpleMessage("상태"),
+    "tailscaleUdp": MessageLookupByLibrary.simpleMessage("UDP"),
+    "tailscaleUserspaceDescription": MessageLookupByLibrary.simpleMessage(
+      "Tailscale은 시스템 Tailscale 어댑터를 만들지 않고 FlClash Core 내부에서 실행됩니다.",
+    ),
+    "tailscaleWaitingForCore": MessageLookupByLibrary.simpleMessage(
+      "Core 대기 중",
+    ),
     "tapIconToRetry": MessageLookupByLibrary.simpleMessage("아이콘을 눌러 다시 시도"),
     "tapToAuthorize": MessageLookupByLibrary.simpleMessage("눌러서 허용"),
     "target": MessageLookupByLibrary.simpleMessage("대상"),

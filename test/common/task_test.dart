@@ -146,6 +146,72 @@ void main() {
   });
 
   test(
+    'tailscale proxies route the tailnet and provide tailscale DNS',
+    () async {
+      final result = await makeRealProfileTask(
+        const MakeRealProfileState(
+          profilesPath: '/profiles',
+          profileId: 7,
+          rawConfig: {
+            'proxies': [
+              {'name': 'Tailscale', 'type': 'tailscale', 'udp': true},
+            ],
+            'rules': ['MATCH,DIRECT'],
+          },
+          realPatchConfig: PatchClashConfig(),
+          appendSystemDns: false,
+          proxyGroups: [],
+          rules: [],
+          addedRules: [],
+          defaultUA: 'FlClash-Test',
+        ),
+      );
+      final config = loadYaml(result.yaml) as YamlMap;
+      final rules = List<String>.from(config['rules']);
+
+      expect(rules, contains('DOMAIN-SUFFIX,ts.net,Tailscale'));
+      expect(rules, contains('IP-CIDR,100.64.0.0/10,Tailscale,no-resolve'));
+      expect(
+        rules,
+        contains('IP-CIDR6,fd7a:115c:a1e0::/48,Tailscale,no-resolve'),
+      );
+      expect(rules.last, 'MATCH,DIRECT');
+      expect(config['dns']['nameserver'], contains('ts://Tailscale'));
+    },
+  );
+
+  test(
+    'the managed tailscale proxy wins routing over a profile proxy',
+    () async {
+      final result = await makeRealProfileTask(
+        const MakeRealProfileState(
+          profilesPath: '/profiles',
+          profileId: 7,
+          rawConfig: {
+            'proxies': [
+              {'name': 'Profile-Tailscale', 'type': 'tailscale', 'udp': true},
+            ],
+            'rules': ['MATCH,DIRECT'],
+          },
+          realPatchConfig: PatchClashConfig(),
+          tailscaleProps: TailscaleProps(enabled: true),
+          appendSystemDns: false,
+          proxyGroups: [],
+          rules: [],
+          addedRules: [],
+          defaultUA: 'FlClash-Test',
+        ),
+      );
+      final config = loadYaml(result.yaml) as YamlMap;
+      final rules = List<String>.from(config['rules']);
+
+      expect(rules, contains('DOMAIN-SUFFIX,ts.net,$tailscaleProxyName'));
+      expect(rules, isNot(contains('DOMAIN-SUFFIX,ts.net,Profile-Tailscale')));
+      expect(config['dns']['nameserver'], contains('ts://$tailscaleProxyName'));
+    },
+  );
+
+  test(
     'makeRealProfileTask normalizes runtime config and added rules',
     () async {
       final rawConfig = await decodeJSONTask<Map<String, dynamic>>(

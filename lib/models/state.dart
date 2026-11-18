@@ -5,6 +5,7 @@ import 'package:prism_ui/color.dart';
 import 'app.dart';
 import 'clash_config.dart';
 import 'common.dart';
+import 'config.dart';
 import 'core.dart';
 import 'profile.dart';
 
@@ -199,6 +200,7 @@ abstract class MakeRealProfileState with _$MakeRealProfileState {
     required int profileId,
     required Map<String, dynamic> rawConfig,
     required PatchClashConfig realPatchConfig,
+    @Default(defaultTailscaleProps) TailscaleProps tailscaleProps,
     @Default(ProfileOverrides()) ProfileOverrides overrides,
     @Default(false) bool bypassPrivateRoute,
 

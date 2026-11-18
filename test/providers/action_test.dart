@@ -343,6 +343,31 @@ void main() {
       skip: !Platform.isWindows ? 'Windows-only interface binding' : false,
     );
 
+    test('startCore refuses an unavailable Tailscale interface', () async {
+      final previousLister = listNetworkInterfaces;
+      addTearDown(() => listNetworkInterfaces = previousLister);
+      listNetworkInterfaces = ({bool includeLoopback = false}) async => [
+        testNetworkInterface('WLAN', addresses: ['192.168.1.20']),
+      ];
+      final container = ProviderContainer(
+        overrides: [
+          coreActionProvider.overrideWith(_TestCoreAction.new),
+          tailscaleSettingProvider.overrideWithBuild(
+            (_, _) =>
+                const TailscaleProps(enabled: true, interfaceName: 'Offline'),
+          ),
+        ],
+      );
+      addTearDown(container.dispose);
+      final coreAction =
+          container.read(coreActionProvider.notifier) as _TestCoreAction;
+
+      await coreAction.startCore();
+
+      expect(coreAction.startLifecycleCount, 0);
+      expect(container.read(coreStatusProvider), CoreStatus.disconnected);
+    }, skip: !Platform.isWindows ? 'Windows-only interface binding' : false);
+
     test(
       'restartCore refuses an unavailable selected Windows interface',
       () async {

@@ -65,6 +65,10 @@ extra inbound ports (`port`, `socks-port`, `redir-port`, `tproxy-port`), the dia
 task writes over the profile's own section. A new `PatchClashConfig` field written by `_makeRealProfileTask` lands here without further
 work. A value the profile build reads from another settings object has to be added to `setupPatchProvider`.
 
+`TailscaleProps` is such a settings object: `setupPatchProvider` watches it, and `_makeRealProfileTask` reads it to
+inject or omit the app-level Tailscale proxy, tailnet rules, and DNS resolver. Keep it on the apply path; the running
+Core cannot patch a proxy definition in place.
+
 `applyProfileDebounce` waits for the changes to stop for at least 2 s, and no less than the last push to the Core
 took, up to 10 s. The floor takes in a few switches flipped in a row and keeps a change made just before leaving a page
 from reloading during the transition; the push time keeps a run of changes on a large profile from queuing one reload

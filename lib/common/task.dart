@@ -109,6 +109,109 @@ String? lastMatchTarget(List<String> rules) {
   return null;
 }
 
+Map<String, dynamic> _tailscaleProxyDefinition(TailscaleProps props) {
+  return {
+    'name': tailscaleProxyName,
+    'type': 'tailscale',
+    'udp': props.udp,
+    if (props.hostname.trim().isNotEmpty) 'hostname': props.hostname.trim(),
+    if (props.authKey.trim().isNotEmpty) 'auth-key': props.authKey.trim(),
+    if (props.controlUrl.trim().isNotEmpty)
+      'control-url': props.controlUrl.trim(),
+    if (props.stateDir.trim().isNotEmpty) 'state-dir': props.stateDir.trim(),
+    if (props.interfaceName.trim().isNotEmpty)
+      'interface-name': props.interfaceName.trim(),
+    if (props.acceptRoutes) 'accept-routes': true,
+    if (props.exitNode.trim().isNotEmpty) 'exit-node': props.exitNode.trim(),
+    if (props.exitNode.trim().isNotEmpty)
+      'exit-node-allow-lan-access': props.exitNodeAllowLanAccess,
+    if (props.ephemeral) 'ephemeral': true,
+    if (props.dialerProxy.trim().isNotEmpty)
+      'dialer-proxy': props.dialerProxy.trim(),
+  };
+}
+
+void _injectTailscaleProxy(
+  Map<dynamic, dynamic> rawConfig,
+  TailscaleProps props,
+) {
+  if (!props.enabled) {
+    return;
+  }
+  final proxies = rawConfig['proxies'] is List
+      ? List<dynamic>.from(rawConfig['proxies'] as List)
+      : <dynamic>[];
+  proxies.removeWhere(
+    (proxy) => proxy is Map && proxy['name'] == tailscaleProxyName,
+  );
+  proxies.add(_tailscaleProxyDefinition(props));
+  rawConfig['proxies'] = proxies;
+}
+
+void _applyTailscaleRouting(
+  Map<dynamic, dynamic> rawConfig, {
+  required bool routeTailnet,
+}) {
+  if (!routeTailnet) {
+    return;
+  }
+  final proxies = rawConfig['proxies'];
+  if (proxies is! List) {
+    return;
+  }
+  String? proxyName;
+  String? fallbackProxyName;
+  for (final proxy in proxies) {
+    if (proxy is Map && proxy['type'] == 'tailscale') {
+      final name = proxy['name'];
+      if (name is String && name.trim().isNotEmpty) {
+        if (name == tailscaleProxyName) {
+          proxyName = name;
+          break;
+        }
+        fallbackProxyName ??= name;
+      }
+    }
+  }
+  proxyName ??= fallbackProxyName;
+  if (proxyName == null) {
+    return;
+  }
+
+  final rules = List<String>.from(rawConfig['rules'] as List? ?? const []);
+  final tailscaleRules = [
+    'DOMAIN-SUFFIX,ts.net,$proxyName',
+    'IP-CIDR,100.64.0.0/10,$proxyName,no-resolve',
+    'IP-CIDR6,fd7a:115c:a1e0::/48,$proxyName,no-resolve',
+  ];
+  final matchIndex = rules.indexWhere(
+    (rule) => rule.trimLeft().toUpperCase().startsWith('MATCH,'),
+  );
+  final rulesBeforeMatch = matchIndex == -1 ? rules : rules.take(matchIndex);
+  final additions = [
+    for (final rule in tailscaleRules)
+      if (!rulesBeforeMatch.contains(rule)) rule,
+  ];
+  if (additions.isNotEmpty) {
+    if (matchIndex == -1) {
+      rules.addAll(additions);
+    } else {
+      rules.insertAll(matchIndex, additions);
+    }
+    rawConfig['rules'] = rules;
+  }
+
+  final dns = rawConfig['dns'] is Map
+      ? Map<String, dynamic>.from(rawConfig['dns'] as Map)
+      : <String, dynamic>{};
+  final nameserver = List<String>.from(dns['nameserver'] as List? ?? const []);
+  final resolver = 'ts://$proxyName';
+  if (!nameserver.contains(resolver)) {
+    dns['nameserver'] = [...nameserver, resolver];
+  }
+  rawConfig['dns'] = dns;
+}
+
 Future<RealProfile> makeRealProfileTask(MakeRealProfileState data) async {
   return compute<MakeRealProfileState, RealProfile>(_makeRealProfileTask, data);
 }
@@ -380,6 +483,11 @@ Future<RealProfile> _makeRealProfileTask(MakeRealProfileState data) async {
         .toList();
   }
   rawConfig['rules'] = [...mitm.rules, ...rules];
+  _injectTailscaleProxy(rawConfig, data.tailscaleProps);
+  _applyTailscaleRouting(
+    rawConfig,
+    routeTailnet: data.tailscaleProps.routeTailnet,
+  );
   final yaml = await _encodeYaml(Map<String, dynamic>.from(rawConfig));
   return (yaml: yaml, md5: yaml.toMd5(), counts: configCountsOf(rawConfig));
 }

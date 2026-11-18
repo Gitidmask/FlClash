@@ -95,6 +95,11 @@ class AppLocalizations {
     return Intl.message('Profiles', name: 'profiles', desc: '', args: []);
   }
 
+  /// `Tailscale`
+  String get tailscale {
+    return Intl.message('Tailscale', name: 'tailscale', desc: '', args: []);
+  }
+
   /// `Tools`
   String get tools {
     return Intl.message('Tools', name: 'tools', desc: '', args: []);
@@ -9107,6 +9112,256 @@ class AppLocalizations {
     return Intl.message(
       'These domains are resolved by Fallback directly.',
       name: 'fallbackFilterDomainDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Status`
+  String get tailscaleStatus {
+    return Intl.message('Status', name: 'tailscaleStatus', desc: '', args: []);
+  }
+
+  /// `Control`
+  String get tailscaleControl {
+    return Intl.message(
+      'Control',
+      name: 'tailscaleControl',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Info`
+  String get tailscaleInfo {
+    return Intl.message('Info', name: 'tailscaleInfo', desc: '', args: []);
+  }
+
+  /// `Not configured`
+  String get tailscaleNotConfigured {
+    return Intl.message(
+      'Not configured',
+      name: 'tailscaleNotConfigured',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Waiting for Core`
+  String get tailscaleWaitingForCore {
+    return Intl.message(
+      'Waiting for Core',
+      name: 'tailscaleWaitingForCore',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Login required`
+  String get tailscaleLoginRequired {
+    return Intl.message(
+      'Login required',
+      name: 'tailscaleLoginRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Log in`
+  String get tailscaleLogin {
+    return Intl.message('Log in', name: 'tailscaleLogin', desc: '', args: []);
+  }
+
+  /// `Log out`
+  String get tailscaleLogout {
+    return Intl.message('Log out', name: 'tailscaleLogout', desc: '', args: []);
+  }
+
+  /// `Auth key`
+  String get tailscaleAuthKey {
+    return Intl.message(
+      'Auth key',
+      name: 'tailscaleAuthKey',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Control server`
+  String get tailscaleControlServer {
+    return Intl.message(
+      'Control server',
+      name: 'tailscaleControlServer',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `State directory`
+  String get tailscaleStateDirectory {
+    return Intl.message(
+      'State directory',
+      name: 'tailscaleStateDirectory',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Accept subnet routes`
+  String get tailscaleAcceptRoutes {
+    return Intl.message(
+      'Accept subnet routes',
+      name: 'tailscaleAcceptRoutes',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Exit node`
+  String get tailscaleExitNode {
+    return Intl.message(
+      'Exit node',
+      name: 'tailscaleExitNode',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Allow LAN access`
+  String get tailscaleExitNodeAllowLan {
+    return Intl.message(
+      'Allow LAN access',
+      name: 'tailscaleExitNodeAllowLan',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Ephemeral node`
+  String get tailscaleEphemeral {
+    return Intl.message(
+      'Ephemeral node',
+      name: 'tailscaleEphemeral',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Route tailnet traffic`
+  String get tailscaleRouteTailnet {
+    return Intl.message(
+      'Route tailnet traffic',
+      name: 'tailscaleRouteTailnet',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Follow global interface`
+  String get tailscaleFollowGlobalInterface {
+    return Intl.message(
+      'Follow global interface',
+      name: 'tailscaleFollowGlobalInterface',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tailscale control and peer traffic uses the selected interface.`
+  String get tailscaleNetworkDescription {
+    return Intl.message(
+      'Tailscale control and peer traffic uses the selected interface.',
+      name: 'tailscaleNetworkDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tailscale runs inside FlClash Core without creating a system Tailscale adapter.`
+  String get tailscaleUserspaceDescription {
+    return Intl.message(
+      'Tailscale runs inside FlClash Core without creating a system Tailscale adapter.',
+      name: 'tailscaleUserspaceDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tailnet destinations use this proxy while the profile's other rules stay unchanged.`
+  String get tailscaleRoutingDescription {
+    return Intl.message(
+      'Tailnet destinations use this proxy while the profile\'s other rules stay unchanged.',
+      name: 'tailscaleRoutingDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Inbound services that bind to a Tailscale interface still need the system Tailscale client.`
+  String get tailscaleLimitationsDescription {
+    return Intl.message(
+      'Inbound services that bind to a Tailscale interface still need the system Tailscale client.',
+      name: 'tailscaleLimitationsDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tailscale address`
+  String get tailscaleNodeAddress {
+    return Intl.message(
+      'Tailscale address',
+      name: 'tailscaleNodeAddress',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Backend state`
+  String get tailscaleBackendState {
+    return Intl.message(
+      'Backend state',
+      name: 'tailscaleBackendState',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Health`
+  String get tailscaleHealth {
+    return Intl.message('Health', name: 'tailscaleHealth', desc: '', args: []);
+  }
+
+  /// `No health issues`
+  String get tailscaleNoHealthIssues {
+    return Intl.message(
+      'No health issues',
+      name: 'tailscaleNoHealthIssues',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Login URL`
+  String get tailscaleLoginUrl {
+    return Intl.message(
+      'Login URL',
+      name: 'tailscaleLoginUrl',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `UDP`
+  String get tailscaleUdp {
+    return Intl.message('UDP', name: 'tailscaleUdp', desc: '', args: []);
+  }
+
+  /// `MagicDNS`
+  String get tailscaleMagicDns {
+    return Intl.message(
+      'MagicDNS',
+      name: 'tailscaleMagicDns',
       desc: '',
       args: [],
     );

@@ -2043,6 +2043,69 @@ class MessageLookup extends MessageLookupByLibrary {
     "systemProxy": MessageLookupByLibrary.simpleMessage("System proxy"),
     "tab": MessageLookupByLibrary.simpleMessage("Tab"),
     "tabAnimation": MessageLookupByLibrary.simpleMessage("Tab animation"),
+    "tailscale": MessageLookupByLibrary.simpleMessage("Tailscale"),
+    "tailscaleAcceptRoutes": MessageLookupByLibrary.simpleMessage(
+      "Accept subnet routes",
+    ),
+    "tailscaleAuthKey": MessageLookupByLibrary.simpleMessage("Auth key"),
+    "tailscaleBackendState": MessageLookupByLibrary.simpleMessage(
+      "Backend state",
+    ),
+    "tailscaleControl": MessageLookupByLibrary.simpleMessage("Control"),
+    "tailscaleControlServer": MessageLookupByLibrary.simpleMessage(
+      "Control server",
+    ),
+    "tailscaleEphemeral": MessageLookupByLibrary.simpleMessage(
+      "Ephemeral node",
+    ),
+    "tailscaleExitNode": MessageLookupByLibrary.simpleMessage("Exit node"),
+    "tailscaleExitNodeAllowLan": MessageLookupByLibrary.simpleMessage(
+      "Allow LAN access",
+    ),
+    "tailscaleFollowGlobalInterface": MessageLookupByLibrary.simpleMessage(
+      "Follow global interface",
+    ),
+    "tailscaleHealth": MessageLookupByLibrary.simpleMessage("Health"),
+    "tailscaleInfo": MessageLookupByLibrary.simpleMessage("Info"),
+    "tailscaleLimitationsDescription": MessageLookupByLibrary.simpleMessage(
+      "Inbound services that bind to a Tailscale interface still need the system Tailscale client.",
+    ),
+    "tailscaleLogin": MessageLookupByLibrary.simpleMessage("Log in"),
+    "tailscaleLoginRequired": MessageLookupByLibrary.simpleMessage(
+      "Login required",
+    ),
+    "tailscaleLoginUrl": MessageLookupByLibrary.simpleMessage("Login URL"),
+    "tailscaleLogout": MessageLookupByLibrary.simpleMessage("Log out"),
+    "tailscaleMagicDns": MessageLookupByLibrary.simpleMessage("MagicDNS"),
+    "tailscaleNetworkDescription": MessageLookupByLibrary.simpleMessage(
+      "Tailscale control and peer traffic uses the selected interface.",
+    ),
+    "tailscaleNoHealthIssues": MessageLookupByLibrary.simpleMessage(
+      "No health issues",
+    ),
+    "tailscaleNodeAddress": MessageLookupByLibrary.simpleMessage(
+      "Tailscale address",
+    ),
+    "tailscaleNotConfigured": MessageLookupByLibrary.simpleMessage(
+      "Not configured",
+    ),
+    "tailscaleRouteTailnet": MessageLookupByLibrary.simpleMessage(
+      "Route tailnet traffic",
+    ),
+    "tailscaleRoutingDescription": MessageLookupByLibrary.simpleMessage(
+      "Tailnet destinations use this proxy while the profile\'s other rules stay unchanged.",
+    ),
+    "tailscaleStateDirectory": MessageLookupByLibrary.simpleMessage(
+      "State directory",
+    ),
+    "tailscaleStatus": MessageLookupByLibrary.simpleMessage("Status"),
+    "tailscaleUdp": MessageLookupByLibrary.simpleMessage("UDP"),
+    "tailscaleUserspaceDescription": MessageLookupByLibrary.simpleMessage(
+      "Tailscale runs inside FlClash Core without creating a system Tailscale adapter.",
+    ),
+    "tailscaleWaitingForCore": MessageLookupByLibrary.simpleMessage(
+      "Waiting for Core",
+    ),
     "tapIconToRetry": MessageLookupByLibrary.simpleMessage(
       "Tap the icon to retry",
     ),

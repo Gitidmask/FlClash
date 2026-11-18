@@ -40,12 +40,18 @@ CoreOptions coreOptions(Ref ref) {
 }
 
 @riverpod
-({PatchClashConfig patchConfig, bool appendSystemDns, bool bypassPrivateRoute})
+({
+  PatchClashConfig patchConfig,
+  TailscaleProps tailscaleProps,
+  bool appendSystemDns,
+  bool bypassPrivateRoute,
+})
 setupPatch(Ref ref) {
   return (
     patchConfig: ref.watch(
       patchClashConfigProvider.select((state) => state.setupOnly),
     ),
+    tailscaleProps: ref.watch(tailscaleSettingProvider),
     appendSystemDns: ref.watch(
       networkSettingProvider.select((state) => state.appendSystemDns),
     ),

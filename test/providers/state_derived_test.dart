@@ -1019,6 +1019,12 @@ void main() {
       container.read(setupPatchProvider),
       system.isDesktop ? isNot(withSystemDns) : withSystemDns,
     );
+
+    final beforeTailscale = container.read(setupPatchProvider);
+    container
+        .read(tailscaleSettingProvider.notifier)
+        .update((state) => state.copyWith(enabled: true));
+    expect(container.read(setupPatchProvider), isNot(beforeTailscale));
   });
 
   test('shared state carries the notification stop action switch', () async {

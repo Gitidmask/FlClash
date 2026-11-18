@@ -1106,6 +1106,92 @@ void main() {
       overrides: ProfileOverrides(),
     );
 
+    test('tailscale settings inject one proxy into a file profile', () async {
+      final profile = Profile.normal(label: 'p');
+      final core = _MockCoreHandlerInterface();
+      when(
+        () => core.getProfileBase(any()),
+      ).thenAnswer((_) async => const ProfileBase(config: {}, digest: 'd'));
+      final scoped = ProviderContainer(
+        overrides: [
+          profilesProvider.overrideWith(() => TestProfiles([profile])),
+          currentProfileIdProvider.overrideWithBuild((_, _) => profile.id),
+          tailscaleSettingProvider.overrideWithBuild(
+            (_, _) => const TailscaleProps(
+              enabled: true,
+              hostname: 'flclash-test',
+              interfaceName: 'WLAN',
+            ),
+          ),
+          coreHandlerProvider.overrideWithValue(CoreController.scoped(core)),
+          setupActionProvider.overrideWith(SetupAction.new),
+        ],
+      );
+      addTearDown(scoped.dispose);
+
+      final res = await scoped
+          .read(setupActionProvider.notifier)
+          .getProfile(
+            setupState: nullProfileSetupState.copyWith(profileId: profile.id),
+            patchConfig: const PatchClashConfig(),
+          );
+      final config = loadYaml(res.yaml) as YamlMap;
+      expect(config['proxies'], isA<YamlList>());
+      final proxy = (config['proxies'] as YamlList).single as YamlMap;
+
+      expect(proxy['name'], tailscaleProxyName);
+      expect(proxy['type'], 'tailscale');
+      expect(proxy['hostname'], 'flclash-test');
+      expect(proxy['interface-name'], 'WLAN');
+      expect(
+        config['rules'],
+        contains('DOMAIN-SUFFIX,ts.net,$tailscaleProxyName'),
+      );
+      expect(config['dns']['nameserver'], contains('ts://$tailscaleProxyName'));
+    });
+
+    test(
+      'tailscale can stay configured without taking over tailnet routes',
+      () async {
+        final profile = Profile.normal(label: 'p');
+        final core = _MockCoreHandlerInterface();
+        when(
+          () => core.getProfileBase(any()),
+        ).thenAnswer((_) async => const ProfileBase(config: {}, digest: 'd'));
+        final scoped = ProviderContainer(
+          overrides: [
+            profilesProvider.overrideWith(() => TestProfiles([profile])),
+            currentProfileIdProvider.overrideWithBuild((_, _) => profile.id),
+            tailscaleSettingProvider.overrideWithBuild(
+              (_, _) =>
+                  const TailscaleProps(enabled: true, routeTailnet: false),
+            ),
+            coreHandlerProvider.overrideWithValue(CoreController.scoped(core)),
+            setupActionProvider.overrideWith(SetupAction.new),
+          ],
+        );
+        addTearDown(scoped.dispose);
+
+        final res = await scoped
+            .read(setupActionProvider.notifier)
+            .getProfile(
+              setupState: nullProfileSetupState.copyWith(profileId: profile.id),
+              patchConfig: const PatchClashConfig(),
+            );
+        final config = loadYaml(res.yaml) as YamlMap;
+
+        expect(
+          (config['proxies'] as YamlList).single['name'],
+          tailscaleProxyName,
+        );
+        expect(config['rules'], isEmpty);
+        expect(
+          config['dns']?['nameserver'],
+          isNot(contains('ts://$tailscaleProxyName')),
+        );
+      },
+    );
+
     test(
       'a refresh failure still runs core.setupConfig and preloadInvoke',
       () async {

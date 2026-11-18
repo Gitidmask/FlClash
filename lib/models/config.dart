@@ -80,6 +80,7 @@ const defaultFilters = [
 ];
 
 const defaultAppSettingProps = AppSettingProps();
+const defaultTailscaleProps = TailscaleProps();
 const defaultVpnProps = VpnProps();
 const defaultAuthenticationProps = AuthenticationProps();
 const defaultNetworkProps = NetworkProps();
@@ -287,6 +288,50 @@ abstract class AppSettingProps with _$AppSettingProps {
       return defaultAppSettingProps;
     }
     return decodeSalvaging('app settings', json, AppSettingProps.fromJson);
+  }
+}
+
+const tailscaleProxyName = 'FlClash-Tailscale';
+
+@Freezed(toStringOverride: false)
+abstract class TailscaleProps with _$TailscaleProps {
+  const TailscaleProps._();
+
+  const factory TailscaleProps({
+    @Default(false) bool enabled,
+    @Default('') String hostname,
+    @Default('') String authKey,
+    @Default('') String controlUrl,
+    @Default('tailscale') String stateDir,
+    @Default('') String interfaceName,
+    @Default(false) bool acceptRoutes,
+    @Default('') String exitNode,
+    @Default(true) bool exitNodeAllowLanAccess,
+    @Default(false) bool ephemeral,
+    @Default(true) bool udp,
+    @Default(true) bool routeTailnet,
+    @Default('') String dialerProxy,
+  }) = _TailscaleProps;
+
+  factory TailscaleProps.fromJson(Map<String, Object?> json) =>
+      _$TailscalePropsFromJson(json);
+
+  factory TailscaleProps.safeFromJson(Map<String, Object?>? json) {
+    if (json == null) {
+      return defaultTailscaleProps;
+    }
+    return decodeSalvaging('tailscale settings', json, TailscaleProps.fromJson);
+  }
+
+  @override
+  String toString() {
+    return 'TailscaleProps(enabled: $enabled, hostname: $hostname, '
+        'authKey: ${authKey.isEmpty ? '' : '***'}, controlUrl: $controlUrl, '
+        'stateDir: $stateDir, interfaceName: $interfaceName, '
+        'acceptRoutes: $acceptRoutes, exitNode: $exitNode, '
+        'exitNodeAllowLanAccess: $exitNodeAllowLanAccess, '
+        'ephemeral: $ephemeral, udp: $udp, routeTailnet: $routeTailnet, '
+        'dialerProxy: $dialerProxy)';
   }
 }
 
@@ -508,6 +553,9 @@ abstract class Config with _$Config {
     @JsonKey(fromJson: AppSettingProps.safeFromJson)
     @Default(defaultAppSettingProps)
     AppSettingProps appSettingProps,
+    @JsonKey(fromJson: TailscaleProps.safeFromJson)
+    @Default(defaultTailscaleProps)
+    TailscaleProps tailscaleProps,
     DAVProps? davProps,
     @Default(defaultNetworkProps) NetworkProps networkProps,
     @Default(defaultVpnProps) VpnProps vpnProps,

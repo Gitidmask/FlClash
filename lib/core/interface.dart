@@ -206,6 +206,22 @@ abstract class CoreHandlerInterface {
     );
   }
 
+  Future<TailscaleStatus> getTailscaleStatus(String name) {
+    return _query(
+      CoreMethod.tailscaleStatus,
+      _model(TailscaleStatus.fromJson),
+      arguments: {'name': name},
+    );
+  }
+
+  Future<void> loginTailscale(String name) {
+    return _command(CoreMethod.tailscaleLogin, arguments: {'name': name});
+  }
+
+  Future<void> logoutTailscale(String name) {
+    return _command(CoreMethod.tailscaleLogout, arguments: {'name': name});
+  }
+
   Future<List<String>> encodeShareLinks(List<Map<String, dynamic>> proxies) {
     return _query(
       CoreMethod.shareLinkEncode,

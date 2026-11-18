@@ -2208,6 +2208,71 @@ class MessageLookup extends MessageLookupByLibrary {
     "tabAnimation": MessageLookupByLibrary.simpleMessage(
       "Animation des onglets",
     ),
+    "tailscale": MessageLookupByLibrary.simpleMessage("Tailscale"),
+    "tailscaleAcceptRoutes": MessageLookupByLibrary.simpleMessage(
+      "Accepter les routes de sous-réseau",
+    ),
+    "tailscaleAuthKey": MessageLookupByLibrary.simpleMessage(
+      "Clé d’authentification",
+    ),
+    "tailscaleBackendState": MessageLookupByLibrary.simpleMessage(
+      "État du backend",
+    ),
+    "tailscaleControl": MessageLookupByLibrary.simpleMessage("Contrôle"),
+    "tailscaleControlServer": MessageLookupByLibrary.simpleMessage(
+      "Serveur de contrôle",
+    ),
+    "tailscaleEphemeral": MessageLookupByLibrary.simpleMessage("Nœud éphémère"),
+    "tailscaleExitNode": MessageLookupByLibrary.simpleMessage("Nœud de sortie"),
+    "tailscaleExitNodeAllowLan": MessageLookupByLibrary.simpleMessage(
+      "Autoriser l’accès au réseau local",
+    ),
+    "tailscaleFollowGlobalInterface": MessageLookupByLibrary.simpleMessage(
+      "Suivre l’interface globale",
+    ),
+    "tailscaleHealth": MessageLookupByLibrary.simpleMessage("Santé"),
+    "tailscaleInfo": MessageLookupByLibrary.simpleMessage("Infos"),
+    "tailscaleLimitationsDescription": MessageLookupByLibrary.simpleMessage(
+      "Les services entrants liés à une interface Tailscale nécessitent toujours le client Tailscale système.",
+    ),
+    "tailscaleLogin": MessageLookupByLibrary.simpleMessage("Se connecter"),
+    "tailscaleLoginRequired": MessageLookupByLibrary.simpleMessage(
+      "Connexion requise",
+    ),
+    "tailscaleLoginUrl": MessageLookupByLibrary.simpleMessage(
+      "URL de connexion",
+    ),
+    "tailscaleLogout": MessageLookupByLibrary.simpleMessage("Se déconnecter"),
+    "tailscaleMagicDns": MessageLookupByLibrary.simpleMessage("MagicDNS"),
+    "tailscaleNetworkDescription": MessageLookupByLibrary.simpleMessage(
+      "Le contrôle et le trafic pair Tailscale utilisent l’interface sélectionnée.",
+    ),
+    "tailscaleNoHealthIssues": MessageLookupByLibrary.simpleMessage(
+      "Aucun problème",
+    ),
+    "tailscaleNodeAddress": MessageLookupByLibrary.simpleMessage(
+      "Adresse Tailscale",
+    ),
+    "tailscaleNotConfigured": MessageLookupByLibrary.simpleMessage(
+      "Non configuré",
+    ),
+    "tailscaleRouteTailnet": MessageLookupByLibrary.simpleMessage(
+      "Router le trafic Tailnet",
+    ),
+    "tailscaleRoutingDescription": MessageLookupByLibrary.simpleMessage(
+      "Les destinations Tailnet utilisent ce proxy sans modifier les autres règles du profil.",
+    ),
+    "tailscaleStateDirectory": MessageLookupByLibrary.simpleMessage(
+      "Répertoire d’état",
+    ),
+    "tailscaleStatus": MessageLookupByLibrary.simpleMessage("État"),
+    "tailscaleUdp": MessageLookupByLibrary.simpleMessage("UDP"),
+    "tailscaleUserspaceDescription": MessageLookupByLibrary.simpleMessage(
+      "Tailscale s’exécute dans FlClash Core sans créer d’adaptateur Tailscale système.",
+    ),
+    "tailscaleWaitingForCore": MessageLookupByLibrary.simpleMessage(
+      "En attente du Core",
+    ),
     "tapIconToRetry": MessageLookupByLibrary.simpleMessage(
       "Appuyez sur l’icône pour réessayer",
     ),

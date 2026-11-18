@@ -216,6 +216,20 @@ The TUN fields start at mihomo's own defaults, and a saved zero MTU or empty con
 as those defaults, decodes to them. The outbound rows are plain settings written over every profile, and changing one
 re-applies the profile; keep-alive is forced off on Android, and only Linux honours `routing-mark`.
 
+### Tailscale
+
+The Tailscale tab edits app-level `TailscaleProps`, not a profile or custom-proxy row. `_makeRealProfileTask` injects
+one proxy named `FlClash-Tailscale` into every profile type when enabled, omits empty optional keys, and places the
+tailnet rules before the profile's first `MATCH`. When `routeTailnet` is on, it also adds `ts://FlClash-Tailscale` to
+the DNS nameservers. A profile that already declares a Tailscale proxy still gets the same routing and DNS enrichment,
+even when the app-level proxy is off.
+
+`interface-name` on the injected proxy overrides the profile's global interface for Tailscale's system dialer and packet
+listener. Windows validates it before Core start, restart, and profile application, alongside the global interface.
+The Tailscale page polls `tailscale.status`, uses `tailscale.login` for the interactive login URL, and
+`tailscale.logout` for an enrolled node. These methods resolve the live proxy by name from the tunnel; the adapter
+reports backend state, addresses, health, control server, interface, and login URL without creating a system TUN.
+
 ## HTTPS Decryption
 
 The bundled core has no MITM: it stays private, on `feature/mitm` in FlClash-internal and `feature/mitm-latest` in

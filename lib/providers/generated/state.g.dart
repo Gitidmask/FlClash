@@ -89,7 +89,7 @@ final class CoreOptionsProvider
   }
 }
 
-String _$coreOptionsHash() => r'ef7cb84b1c8ad89180f56c91cf863376c1ff9db5';
+String _$coreOptionsHash() => r'43945407c97ebce7e8106973f53ca83ce95c861a';
 
 @ProviderFor(setupPatch)
 final setupPatchProvider = SetupPatchProvider._();
@@ -101,16 +101,19 @@ final class SetupPatchProvider
             bool appendSystemDns,
             bool bypassPrivateRoute,
             PatchClashConfig patchConfig,
+            TailscaleProps tailscaleProps,
           }),
           ({
             bool appendSystemDns,
             bool bypassPrivateRoute,
             PatchClashConfig patchConfig,
+            TailscaleProps tailscaleProps,
           }),
           ({
             bool appendSystemDns,
             bool bypassPrivateRoute,
             PatchClashConfig patchConfig,
+            TailscaleProps tailscaleProps,
           })
         >
     with
@@ -119,6 +122,7 @@ final class SetupPatchProvider
             bool appendSystemDns,
             bool bypassPrivateRoute,
             PatchClashConfig patchConfig,
+            TailscaleProps tailscaleProps,
           })
         > {
   SetupPatchProvider._()
@@ -142,6 +146,7 @@ final class SetupPatchProvider
       bool appendSystemDns,
       bool bypassPrivateRoute,
       PatchClashConfig patchConfig,
+      TailscaleProps tailscaleProps,
     })
   >
   $createElement($ProviderPointer pointer) => $ProviderElement(pointer);
@@ -151,6 +156,7 @@ final class SetupPatchProvider
     bool appendSystemDns,
     bool bypassPrivateRoute,
     PatchClashConfig patchConfig,
+    TailscaleProps tailscaleProps,
   })
   create(Ref ref) {
     return setupPatch(ref);
@@ -162,6 +168,7 @@ final class SetupPatchProvider
       bool appendSystemDns,
       bool bypassPrivateRoute,
       PatchClashConfig patchConfig,
+      TailscaleProps tailscaleProps,
     })
     value,
   ) {
@@ -173,13 +180,14 @@ final class SetupPatchProvider
               bool appendSystemDns,
               bool bypassPrivateRoute,
               PatchClashConfig patchConfig,
+              TailscaleProps tailscaleProps,
             })
           >(value),
     );
   }
 }
 
-String _$setupPatchHash() => r'd09fb41d40ced4cd47c9131fe55e983e35128724';
+String _$setupPatchHash() => r'f0e9059f7f105a64da1289c82fbec5bd9fd270b0';
 
 @ProviderFor(trayState)
 final trayStateProvider = TrayStateProvider._();
@@ -3659,7 +3667,7 @@ final class SetupStateProvider
   }
 }
 
-String _$setupStateHash() => r'4cfdb0a779dc8097c8c1027b73252f19f925a3ad';
+String _$setupStateHash() => r'e8c7cc4742b6e4cf4227071dc01ec6a943334dd0';
 
 final class SetupStateFamily extends $Family
     with $FunctionalFamilyOverride<FutureOr<SetupState>, int?> {

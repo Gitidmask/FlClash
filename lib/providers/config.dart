@@ -12,6 +12,15 @@ class AppSetting extends _$AppSetting with AutoDisposeNotifierMixin {
   }
 }
 
+@riverpod
+class TailscaleSetting extends _$TailscaleSetting
+    with AutoDisposeNotifierMixin {
+  @override
+  TailscaleProps build() {
+    return const TailscaleProps();
+  }
+}
+
 @Riverpod(keepAlive: true)
 class WindowSetting extends _$WindowSetting with AutoDisposeNotifierMixin {
   @override
@@ -98,6 +107,7 @@ class ExcludeSSIDs extends _$ExcludeSSIDs with AutoDisposeNotifierMixin {
 @Riverpod(name: 'configProvider')
 Config _config(Ref ref) {
   final appSettingProps = ref.watch(appSettingProvider);
+  final tailscaleProps = ref.watch(tailscaleSettingProvider);
   final windowProps = ref.watch(windowSettingProvider);
   final vpnProps = ref.watch(vpnSettingProvider);
   final networkProps = ref.watch(networkSettingProvider);
@@ -110,6 +120,7 @@ Config _config(Ref ref) {
   final excludeSSIDs = ref.watch(excludeSSIDsProvider);
   return Config(
     appSettingProps: appSettingProps,
+    tailscaleProps: tailscaleProps,
     windowProps: windowProps,
     vpnProps: vpnProps,
     networkProps: networkProps,
@@ -125,6 +136,7 @@ Config _config(Ref ref) {
 
 void writeConfig(Ref ref, Config config) {
   ref.read(appSettingProvider.notifier).value = config.appSettingProps;
+  ref.read(tailscaleSettingProvider.notifier).value = config.tailscaleProps;
   ref.read(windowSettingProvider.notifier).value = config.windowProps;
   ref.read(vpnSettingProvider.notifier).value = config.vpnProps;
   ref.read(networkSettingProvider.notifier).value = config.networkProps;
@@ -142,6 +154,7 @@ void writeConfig(Ref ref, Config config) {
 List<Override> buildConfigOverrides(Config config) {
   return [
     appSettingProvider.overrideWithBuild((_, _) => config.appSettingProps),
+    tailscaleSettingProvider.overrideWithBuild((_, _) => config.tailscaleProps),
     windowSettingProvider.overrideWithBuild((_, _) => config.windowProps),
     vpnSettingProvider.overrideWithBuild((_, _) => config.vpnProps),
     networkSettingProvider.overrideWithBuild((_, _) => config.networkProps),

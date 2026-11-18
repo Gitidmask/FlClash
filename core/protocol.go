@@ -39,6 +39,9 @@ const (
 	proxyTestDelayMethod  CoreMethod = "proxy.testDelay"
 	proxyValidateMethod   CoreMethod = "proxy.validate"
 	proxyConvertMethod    CoreMethod = "proxy.convert"
+	tailscaleStatusMethod CoreMethod = "tailscale.status"
+	tailscaleLoginMethod  CoreMethod = "tailscale.login"
+	tailscaleLogoutMethod CoreMethod = "tailscale.logout"
 	shareLinkEncodeMethod CoreMethod = "shareLink.encode"
 	shareLinkDecodeMethod CoreMethod = "shareLink.decode"
 	filterValidateMethod  CoreMethod = "filter.validate"
@@ -187,6 +190,18 @@ type PathParams struct {
 
 type NameParams struct {
 	Name string `json:"name"`
+}
+
+type TailscaleStatusResult struct {
+	BackendState   string   `json:"backend-state"`
+	AuthURL        string   `json:"auth-url"`
+	Hostname       string   `json:"hostname"`
+	ControlURL     string   `json:"control-url"`
+	InterfaceName  string   `json:"interface-name"`
+	MagicDNSSuffix string   `json:"magic-dns-suffix"`
+	Addresses      []string `json:"addresses"`
+	Health         []string `json:"health"`
+	Online         bool     `json:"online"`
 }
 
 type IDParams struct {

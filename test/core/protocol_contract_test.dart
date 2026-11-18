@@ -108,6 +108,17 @@ class _RecordingCoreHandler extends CoreHandlerInterface {
         'runtime-other': 32,
       },
       CoreMethod.proxySelect => {'message': '', 'changed': true},
+      CoreMethod.tailscaleStatus => {
+        'backend-state': 'Running',
+        'auth-url': '',
+        'hostname': 'flclash',
+        'control-url': 'https://controlplane.tailscale.com',
+        'interface-name': 'WLAN',
+        'magic-dns-suffix': 'tailnet.ts.net',
+        'addresses': ['100.64.0.1'],
+        'health': <String>[],
+        'online': true,
+      },
       CoreMethod.ruleSetCompile => {'behavior': 'ipcidr', 'format': 'text'},
       CoreMethod.ruleSetDump => '/home/responses/2.yaml',
       CoreMethod.configDecrypt => 'mode: rule',
@@ -602,6 +613,21 @@ void main() {
       'plugin-opts': {'mode': 'websocket'},
     });
     expect(missing, isNull);
+  });
+
+  test('tailscale status and commands name the managed proxy', () async {
+    final handler = _RecordingCoreHandler();
+
+    final status = await handler.getTailscaleStatus('TS');
+    await handler.loginTailscale('TS');
+    await handler.logoutTailscale('TS');
+
+    expect(handler.calls[CoreMethod.tailscaleStatus], {'name': 'TS'});
+    expect(handler.calls[CoreMethod.tailscaleLogin], {'name': 'TS'});
+    expect(handler.calls[CoreMethod.tailscaleLogout], {'name': 'TS'});
+    expect(status.backendState, 'Running');
+    expect(status.addresses, ['100.64.0.1']);
+    expect(status.online, isTrue);
   });
 
   test('setupConfig names a base only when the Core applies one', () async {

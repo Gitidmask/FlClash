@@ -44,6 +44,15 @@ abstract final class AppGlyphs {
     ], role: GlyphRole.detail),
   ]);
 
+  static const tailscale = Glyph([
+    GlyphCircle(5.5, 8, 2.4),
+    GlyphCircle(18.5, 8, 2.4),
+    GlyphCircle(12, 18, 2.4),
+    GlyphLink(Offset(5.5, 8), Offset(18.5, 8), 2.4),
+    GlyphLink(Offset(5.5, 8), Offset(12, 18), 2.4),
+    GlyphLink(Offset(18.5, 8), Offset(12, 18), 2.4),
+  ]);
+
   static const requests = Glyph([
     GlyphCircle(12, 12, 8.8),
     GlyphPolyline([

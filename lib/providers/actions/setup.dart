@@ -537,6 +537,7 @@ class SetupAction extends _$SetupAction {
         profileId: profileId,
         rawConfig: rawConfig,
         realPatchConfig: patchConfig,
+        tailscaleProps: ref.read(tailscaleSettingProvider),
         overrides: setupState.overrides,
         bypassPrivateRoute: networkSetting.bypassPrivateRoute,
         keepEmptyDnsOverrides: setupState.profileType != ProfileType.custom,
@@ -723,7 +724,10 @@ class SetupAction extends _$SetupAction {
     FutureOr Function()? onUpdated,
   }) async {
     final patchConfig = ref.read(patchClashConfigProvider);
-    final interfaceError = await _windowsInterfaceError(patchConfig);
+    final interfaceError = await _windowsInterfaceError(
+      patchConfig,
+      ref.read(tailscaleSettingProvider),
+    );
     if (interfaceError != null) {
       dialogs.showBanner(interfaceError, level: BannerLevel.error);
       return _SetupTaskResult.failed;

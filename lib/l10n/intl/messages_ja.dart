@@ -1748,6 +1748,57 @@ class MessageLookup extends MessageLookupByLibrary {
     "systemProxy": MessageLookupByLibrary.simpleMessage("システムプロキシ"),
     "tab": MessageLookupByLibrary.simpleMessage("タブ"),
     "tabAnimation": MessageLookupByLibrary.simpleMessage("タブアニメーション"),
+    "tailscale": MessageLookupByLibrary.simpleMessage("Tailscale"),
+    "tailscaleAcceptRoutes": MessageLookupByLibrary.simpleMessage(
+      "サブネットルートを受け入れる",
+    ),
+    "tailscaleAuthKey": MessageLookupByLibrary.simpleMessage("認証キー"),
+    "tailscaleBackendState": MessageLookupByLibrary.simpleMessage("バックエンド状態"),
+    "tailscaleControl": MessageLookupByLibrary.simpleMessage("コントロール"),
+    "tailscaleControlServer": MessageLookupByLibrary.simpleMessage(
+      "コントロールサーバー",
+    ),
+    "tailscaleEphemeral": MessageLookupByLibrary.simpleMessage("一時ノード"),
+    "tailscaleExitNode": MessageLookupByLibrary.simpleMessage("出口ノード"),
+    "tailscaleExitNodeAllowLan": MessageLookupByLibrary.simpleMessage(
+      "LAN アクセスを許可",
+    ),
+    "tailscaleFollowGlobalInterface": MessageLookupByLibrary.simpleMessage(
+      "グローバルインターフェースに従う",
+    ),
+    "tailscaleHealth": MessageLookupByLibrary.simpleMessage("ヘルス"),
+    "tailscaleInfo": MessageLookupByLibrary.simpleMessage("情報"),
+    "tailscaleLimitationsDescription": MessageLookupByLibrary.simpleMessage(
+      "Tailscale インターフェースにバインドする受信サービスにはシステム Tailscale クライアントが必要です。",
+    ),
+    "tailscaleLogin": MessageLookupByLibrary.simpleMessage("ログイン"),
+    "tailscaleLoginRequired": MessageLookupByLibrary.simpleMessage("ログインが必要"),
+    "tailscaleLoginUrl": MessageLookupByLibrary.simpleMessage("ログイン URL"),
+    "tailscaleLogout": MessageLookupByLibrary.simpleMessage("ログアウト"),
+    "tailscaleMagicDns": MessageLookupByLibrary.simpleMessage("MagicDNS"),
+    "tailscaleNetworkDescription": MessageLookupByLibrary.simpleMessage(
+      "Tailscale の制御およびピア通信は選択したインターフェースを使用します。",
+    ),
+    "tailscaleNoHealthIssues": MessageLookupByLibrary.simpleMessage("問題なし"),
+    "tailscaleNodeAddress": MessageLookupByLibrary.simpleMessage(
+      "Tailscale アドレス",
+    ),
+    "tailscaleNotConfigured": MessageLookupByLibrary.simpleMessage("未設定"),
+    "tailscaleRouteTailnet": MessageLookupByLibrary.simpleMessage(
+      "Tailnet トラフィックをルーティング",
+    ),
+    "tailscaleRoutingDescription": MessageLookupByLibrary.simpleMessage(
+      "Tailnet 宛先はこのプロキシを使用し、他のプロファイルルールは変更されません。",
+    ),
+    "tailscaleStateDirectory": MessageLookupByLibrary.simpleMessage("状態ディレクトリ"),
+    "tailscaleStatus": MessageLookupByLibrary.simpleMessage("ステータス"),
+    "tailscaleUdp": MessageLookupByLibrary.simpleMessage("UDP"),
+    "tailscaleUserspaceDescription": MessageLookupByLibrary.simpleMessage(
+      "Tailscale はシステムアダプターを作成せず FlClash Core 内で動作します。",
+    ),
+    "tailscaleWaitingForCore": MessageLookupByLibrary.simpleMessage(
+      "Core を待機中",
+    ),
     "tapIconToRetry": MessageLookupByLibrary.simpleMessage("アイコンをタップして再試行"),
     "tapToAuthorize": MessageLookupByLibrary.simpleMessage("タップして許可"),
     "target": MessageLookupByLibrary.simpleMessage("宛先"),

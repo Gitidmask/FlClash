@@ -170,6 +170,40 @@ const _$DashboardWidgetEnumMap = {
   DashboardWidget.memoryInfo: 'memoryInfo',
 };
 
+_TailscaleProps _$TailscalePropsFromJson(Map<String, dynamic> json) =>
+    _TailscaleProps(
+      enabled: json['enabled'] as bool? ?? false,
+      hostname: json['hostname'] as String? ?? '',
+      authKey: json['authKey'] as String? ?? '',
+      controlUrl: json['controlUrl'] as String? ?? '',
+      stateDir: json['stateDir'] as String? ?? 'tailscale',
+      interfaceName: json['interfaceName'] as String? ?? '',
+      acceptRoutes: json['acceptRoutes'] as bool? ?? false,
+      exitNode: json['exitNode'] as String? ?? '',
+      exitNodeAllowLanAccess: json['exitNodeAllowLanAccess'] as bool? ?? true,
+      ephemeral: json['ephemeral'] as bool? ?? false,
+      udp: json['udp'] as bool? ?? true,
+      routeTailnet: json['routeTailnet'] as bool? ?? true,
+      dialerProxy: json['dialerProxy'] as String? ?? '',
+    );
+
+Map<String, dynamic> _$TailscalePropsToJson(_TailscaleProps instance) =>
+    <String, dynamic>{
+      'enabled': instance.enabled,
+      'hostname': instance.hostname,
+      'authKey': instance.authKey,
+      'controlUrl': instance.controlUrl,
+      'stateDir': instance.stateDir,
+      'interfaceName': instance.interfaceName,
+      'acceptRoutes': instance.acceptRoutes,
+      'exitNode': instance.exitNode,
+      'exitNodeAllowLanAccess': instance.exitNodeAllowLanAccess,
+      'ephemeral': instance.ephemeral,
+      'udp': instance.udp,
+      'routeTailnet': instance.routeTailnet,
+      'dialerProxy': instance.dialerProxy,
+    };
+
 _AccessControlProps _$AccessControlPropsFromJson(Map<String, dynamic> json) =>
     _AccessControlProps(
       enable: json['enable'] as bool? ?? false,
@@ -435,6 +469,11 @@ _Config _$ConfigFromJson(Map<String, dynamic> json) => _Config(
       : AppSettingProps.safeFromJson(
           json['appSettingProps'] as Map<String, Object?>?,
         ),
+  tailscaleProps: json['tailscaleProps'] == null
+      ? defaultTailscaleProps
+      : TailscaleProps.safeFromJson(
+          json['tailscaleProps'] as Map<String, Object?>?,
+        ),
   davProps: json['davProps'] == null
       ? null
       : DAVProps.fromJson(json['davProps'] as Map<String, dynamic>),
@@ -471,6 +510,7 @@ Map<String, dynamic> _$ConfigToJson(_Config instance) => <String, dynamic>{
   'currentProfileId': instance.currentProfileId,
   'hotKeyActions': instance.hotKeyActions,
   'appSettingProps': instance.appSettingProps,
+  'tailscaleProps': instance.tailscaleProps,
   'davProps': instance.davProps,
   'networkProps': instance.networkProps,
   'vpnProps': instance.vpnProps,

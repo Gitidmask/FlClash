@@ -1,19 +1,38 @@
 part of '../action.dart';
 
-Future<String?> _windowsInterfaceError(PatchClashConfig config) async {
-  if (!system.isWindows ||
-      config.interfaceNameMode != InterfaceNameMode.custom) {
+Future<String?> _windowsInterfaceError(
+  PatchClashConfig config,
+  TailscaleProps tailscale,
+) async {
+  if (!system.isWindows) {
     return null;
   }
-  final interfaceName = config.interfaceName.trim();
-  if (interfaceName.isEmpty) {
-    return currentAppLocalizations.networkInterfaceNotSelected;
+  final interfaceNames = <String>{};
+  if (config.interfaceNameMode == InterfaceNameMode.custom) {
+    final interfaceName = config.interfaceName.trim();
+    if (interfaceName.isEmpty) {
+      return currentAppLocalizations.networkInterfaceNotSelected;
+    }
+    interfaceNames.add(interfaceName);
   }
+  if (tailscale.enabled) {
+    final interfaceName = tailscale.interfaceName.trim();
+    if (interfaceName.isNotEmpty) {
+      interfaceNames.add(interfaceName);
+    }
+  }
+  if (interfaceNames.isEmpty) {
+    return null;
+  }
+
   final interfaces = await getNetworkInterfaces();
-  if (interfaces.any((interface) => interface.name == interfaceName)) {
-    return null;
+  final available = {for (final interface in interfaces) interface.name};
+  for (final interfaceName in interfaceNames) {
+    if (!available.contains(interfaceName)) {
+      return currentAppLocalizations.networkInterfaceUnavailable(interfaceName);
+    }
   }
-  return currentAppLocalizations.networkInterfaceUnavailable(interfaceName);
+  return null;
 }
 
 @Riverpod(keepAlive: true)
@@ -132,7 +151,10 @@ class CoreAction extends _$CoreAction {
 
   @protected
   Future<String?> windowsInterfaceError() {
-    return _windowsInterfaceError(ref.read(patchClashConfigProvider));
+    return _windowsInterfaceError(
+      ref.read(patchClashConfigProvider),
+      ref.read(tailscaleSettingProvider),
+    );
   }
 
   Future<bool> _runRestartWorker() async {
