@@ -166,6 +166,9 @@ class _TailscaleStatusSection extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final appLocalizations = context.appLocalizations;
     final props = ref.watch(tailscaleSettingProvider);
+    final mode = ref.watch(
+      patchClashConfigProvider.select((state) => state.mode),
+    );
     final globalInterfaceName = ref.watch(
       patchClashConfigProvider.select(
         (state) => state.interfaceNameMode == InterfaceNameMode.custom
@@ -196,6 +199,15 @@ class _TailscaleStatusSection extends ConsumerWidget {
           ),
         ),
         if (props.enabled) ...[
+          if (props.routeTailnet && mode != Mode.rule)
+            ListItem(
+              leading: const GlyphIcon(AppGlyphs.warning),
+              title: Text(appLocalizations.tailscaleRuleModeRequired),
+              subtitle: Text(appLocalizations.tailscaleRuleModeDescription),
+              trailing: Text(appLocalizations.rule),
+              onTap: () =>
+                  ref.read(setupActionProvider.notifier).changeMode(Mode.rule),
+            ),
           if (!connected)
             ListItem(
               leading: const GlyphIcon(AppGlyphs.info),

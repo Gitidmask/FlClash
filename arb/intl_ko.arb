@@ -1109,5 +1109,7 @@
   "tailscaleNoHealthIssues": "문제 없음",
   "tailscaleLoginUrl": "로그인 URL",
   "tailscaleUdp": "UDP",
-  "tailscaleMagicDns": "MagicDNS"
+  "tailscaleMagicDns": "MagicDNS",
+  "tailscaleRuleModeRequired": "규칙 모드가 필요합니다",
+  "tailscaleRuleModeDescription": "전역 및 직접 모드는 Tailnet 경로를 우회합니다. 탭하여 규칙 모드로 전환하세요."
 }

@@ -1109,5 +1109,7 @@
   "tailscaleNoHealthIssues": "无异常",
   "tailscaleLoginUrl": "登录地址",
   "tailscaleUdp": "UDP",
-  "tailscaleMagicDns": "MagicDNS"
+  "tailscaleMagicDns": "MagicDNS",
+  "tailscaleRuleModeRequired": "需要规则模式",
+  "tailscaleRuleModeDescription": "全局和直连模式会绕过 Tailnet 路由。点按切换到规则模式。"
 }

@@ -9366,6 +9366,26 @@ class AppLocalizations {
       args: [],
     );
   }
+
+  /// `Rule mode is required`
+  String get tailscaleRuleModeRequired {
+    return Intl.message(
+      'Rule mode is required',
+      name: 'tailscaleRuleModeRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Global and Direct modes bypass Tailnet routes. Tap to switch to Rule mode.`
+  String get tailscaleRuleModeDescription {
+    return Intl.message(
+      'Global and Direct modes bypass Tailnet routes. Tap to switch to Rule mode.',
+      name: 'tailscaleRuleModeDescription',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -1109,5 +1109,7 @@
   "tailscaleNoHealthIssues": "問題なし",
   "tailscaleLoginUrl": "ログイン URL",
   "tailscaleUdp": "UDP",
-  "tailscaleMagicDns": "MagicDNS"
+  "tailscaleMagicDns": "MagicDNS",
+  "tailscaleRuleModeRequired": "ルールモードが必要です",
+  "tailscaleRuleModeDescription": "グローバルモードとダイレクトモードでは Tailnet ルートが適用されません。タップしてルールモードに切り替えます。"
 }

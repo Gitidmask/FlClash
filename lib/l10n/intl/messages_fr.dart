@@ -2262,6 +2262,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "tailscaleRoutingDescription": MessageLookupByLibrary.simpleMessage(
       "Les destinations Tailnet utilisent ce proxy sans modifier les autres règles du profil.",
     ),
+    "tailscaleRuleModeDescription": MessageLookupByLibrary.simpleMessage(
+      "Les modes Global et Direct contournent les routes Tailnet. Touchez pour passer au mode Règles.",
+    ),
+    "tailscaleRuleModeRequired": MessageLookupByLibrary.simpleMessage(
+      "Le mode Règles est requis",
+    ),
     "tailscaleStateDirectory": MessageLookupByLibrary.simpleMessage(
       "Répertoire d’état",
     ),

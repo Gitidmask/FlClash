@@ -2199,6 +2199,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "tailscaleRoutingDescription": MessageLookupByLibrary.simpleMessage(
       "Адреса Tailnet используют этот прокси, остальные правила профиля не меняются.",
     ),
+    "tailscaleRuleModeDescription": MessageLookupByLibrary.simpleMessage(
+      "Режимы «Глобальный» и «Прямой» обходят маршруты Tailnet. Нажмите, чтобы переключиться на режим правил.",
+    ),
+    "tailscaleRuleModeRequired": MessageLookupByLibrary.simpleMessage(
+      "Требуется режим правил",
+    ),
     "tailscaleStateDirectory": MessageLookupByLibrary.simpleMessage(
       "Каталог состояния",
     ),

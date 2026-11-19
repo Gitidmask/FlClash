@@ -1758,6 +1758,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "tailscaleRoutingDescription": MessageLookupByLibrary.simpleMessage(
       "Tailnet 대상은 이 프록시를 사용하며 프로필의 다른 규칙은 변경되지 않습니다.",
     ),
+    "tailscaleRuleModeDescription": MessageLookupByLibrary.simpleMessage(
+      "전역 및 직접 모드는 Tailnet 경로를 우회합니다. 탭하여 규칙 모드로 전환하세요.",
+    ),
+    "tailscaleRuleModeRequired": MessageLookupByLibrary.simpleMessage(
+      "규칙 모드가 필요합니다",
+    ),
     "tailscaleStateDirectory": MessageLookupByLibrary.simpleMessage("상태 디렉터리"),
     "tailscaleStatus": MessageLookupByLibrary.simpleMessage("상태"),
     "tailscaleUdp": MessageLookupByLibrary.simpleMessage("UDP"),

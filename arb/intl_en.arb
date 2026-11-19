@@ -1109,5 +1109,7 @@
   "tailscaleNoHealthIssues": "No health issues",
   "tailscaleLoginUrl": "Login URL",
   "tailscaleUdp": "UDP",
-  "tailscaleMagicDns": "MagicDNS"
+  "tailscaleMagicDns": "MagicDNS",
+  "tailscaleRuleModeRequired": "Rule mode is required",
+  "tailscaleRuleModeDescription": "Global and Direct modes bypass Tailnet routes. Tap to switch to Rule mode."
 }

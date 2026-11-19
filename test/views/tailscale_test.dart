@@ -144,6 +144,42 @@ void main() {
     expect(container.read(tailscaleSettingProvider).interfaceName, 'WLAN');
   });
 
+  testWidgets('global mode warns and switches to rule mode', (tester) async {
+    await AppLocalizations.load(const Locale('en'));
+    final container = ProviderContainer(
+      overrides: [
+        profilesProvider.overrideWith(TestProfiles.new),
+        tailscaleSettingProvider.overrideWithBuild(
+          (_, _) => const TailscaleProps(enabled: true),
+        ),
+      ],
+    );
+    addTearDown(container.dispose);
+    globalState.container = container;
+    container
+        .read(patchClashConfigProvider.notifier)
+        .update((state) => state.copyWith(mode: Mode.global));
+    tester.view.physicalSize = const Size(1200, 1000);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    await tester.pumpWidget(
+      UncontrolledProviderScope(
+        container: container,
+        child: const TestApp(child: TailscaleView()),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('Rule mode is required'), findsOneWidget);
+
+    await tester.tap(find.text('Rule mode is required'));
+    await tester.pumpAndSettle();
+
+    expect(container.read(patchClashConfigProvider).mode, Mode.rule);
+  });
+
   testWidgets('status tab reads and logs in through Core', (tester) async {
     await AppLocalizations.load(const Locale('en'));
     final core = _TailscaleCore();

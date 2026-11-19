@@ -184,22 +184,9 @@ void _applyTailscaleRouting(
     'IP-CIDR,100.64.0.0/10,$proxyName,no-resolve',
     'IP-CIDR6,fd7a:115c:a1e0::/48,$proxyName,no-resolve',
   ];
-  final matchIndex = rules.indexWhere(
-    (rule) => rule.trimLeft().toUpperCase().startsWith('MATCH,'),
-  );
-  final rulesBeforeMatch = matchIndex == -1 ? rules : rules.take(matchIndex);
-  final additions = [
-    for (final rule in tailscaleRules)
-      if (!rulesBeforeMatch.contains(rule)) rule,
-  ];
-  if (additions.isNotEmpty) {
-    if (matchIndex == -1) {
-      rules.addAll(additions);
-    } else {
-      rules.insertAll(matchIndex, additions);
-    }
-    rawConfig['rules'] = rules;
-  }
+  rules.removeWhere(tailscaleRules.contains);
+  rules.insertAll(0, tailscaleRules);
+  rawConfig['rules'] = rules;
 
   final dns = rawConfig['dns'] is Map
       ? Map<String, dynamic>.from(rawConfig['dns'] as Map)

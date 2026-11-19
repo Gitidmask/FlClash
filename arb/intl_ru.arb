@@ -1109,5 +1109,7 @@
   "tailscaleNoHealthIssues": "Проблем нет",
   "tailscaleLoginUrl": "URL входа",
   "tailscaleUdp": "UDP",
-  "tailscaleMagicDns": "MagicDNS"
+  "tailscaleMagicDns": "MagicDNS",
+  "tailscaleRuleModeRequired": "Требуется режим правил",
+  "tailscaleRuleModeDescription": "Режимы «Глобальный» и «Прямой» обходят маршруты Tailnet. Нажмите, чтобы переключиться на режим правил."
 }

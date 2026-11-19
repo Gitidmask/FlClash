@@ -1616,6 +1616,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "tailscaleRoutingDescription": MessageLookupByLibrary.simpleMessage(
       "Tailnet 目标会走此代理，配置中的其他规则保持不变。",
     ),
+    "tailscaleRuleModeDescription": MessageLookupByLibrary.simpleMessage(
+      "全局和直连模式会绕过 Tailnet 路由。点按切换到规则模式。",
+    ),
+    "tailscaleRuleModeRequired": MessageLookupByLibrary.simpleMessage("需要规则模式"),
     "tailscaleStateDirectory": MessageLookupByLibrary.simpleMessage("状态目录"),
     "tailscaleStatus": MessageLookupByLibrary.simpleMessage("状态"),
     "tailscaleUdp": MessageLookupByLibrary.simpleMessage("UDP"),

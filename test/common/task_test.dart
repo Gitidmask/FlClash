@@ -211,6 +211,44 @@ void main() {
     },
   );
 
+  test('tailnet routes precede profile private-ip direct rules', () async {
+    final result = await makeRealProfileTask(
+      const MakeRealProfileState(
+        profilesPath: '/profiles',
+        profileId: 7,
+        rawConfig: {
+          'rules': [
+            'IP-CIDR,100.64.0.0/10,DIRECT',
+            'IP-CIDR6,fd7a:115c:a1e0::/48,DIRECT',
+            'MATCH,DIRECT',
+          ],
+        },
+        realPatchConfig: PatchClashConfig(),
+        tailscaleProps: TailscaleProps(enabled: true),
+        appendSystemDns: false,
+        proxyGroups: [],
+        rules: [],
+        addedRules: [],
+        defaultUA: 'FlClash-Test',
+      ),
+    );
+    final config = loadYaml(result.yaml) as YamlMap;
+    final rules = List<String>.from(config['rules']);
+    final directIpv4 = rules.indexOf('IP-CIDR,100.64.0.0/10,DIRECT');
+    final directIpv6 = rules.indexOf('IP-CIDR6,fd7a:115c:a1e0::/48,DIRECT');
+
+    expect(
+      rules.indexOf('IP-CIDR,100.64.0.0/10,$tailscaleProxyName,no-resolve'),
+      lessThan(directIpv4),
+    );
+    expect(
+      rules.indexOf(
+        'IP-CIDR6,fd7a:115c:a1e0::/48,$tailscaleProxyName,no-resolve',
+      ),
+      lessThan(directIpv6),
+    );
+  });
+
   test(
     'makeRealProfileTask normalizes runtime config and added rules',
     () async {

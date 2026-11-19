@@ -220,9 +220,12 @@ re-applies the profile; keep-alive is forced off on Android, and only Linux hono
 
 The Tailscale tab edits app-level `TailscaleProps`, not a profile or custom-proxy row. `_makeRealProfileTask` injects
 one proxy named `FlClash-Tailscale` into every profile type when enabled, omits empty optional keys, and places the
-tailnet rules before the profile's first `MATCH`. When `routeTailnet` is on, it also adds `ts://FlClash-Tailscale` to
-the DNS nameservers. A profile that already declares a Tailscale proxy still gets the same routing and DNS enrichment,
-even when the app-level proxy is off.
+tailnet rules before every profile rule, including private-IP `DIRECT` rules a subscription commonly ships. When
+`routeTailnet` is on, it also adds `ts://FlClash-Tailscale` to the DNS nameservers. A profile that already declares a
+Tailscale proxy still gets the same routing and DNS enrichment, even when the app-level proxy is off.
+
+Clash modes `global` and `direct` bypass rules. While `routeTailnet` is on, the Tailscale page shows a rule-mode warning
+whose row switches back to `rule`; otherwise a successful Tailscale login still cannot carry tailnet traffic.
 
 `interface-name` on the injected proxy overrides the profile's global interface for Tailscale's system dialer and packet
 listener. Windows validates it before Core start, restart, and profile application, alongside the global interface.

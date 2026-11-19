@@ -1790,6 +1790,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "tailscaleRoutingDescription": MessageLookupByLibrary.simpleMessage(
       "Tailnet 宛先はこのプロキシを使用し、他のプロファイルルールは変更されません。",
     ),
+    "tailscaleRuleModeDescription": MessageLookupByLibrary.simpleMessage(
+      "グローバルモードとダイレクトモードでは Tailnet ルートが適用されません。タップしてルールモードに切り替えます。",
+    ),
+    "tailscaleRuleModeRequired": MessageLookupByLibrary.simpleMessage(
+      "ルールモードが必要です",
+    ),
     "tailscaleStateDirectory": MessageLookupByLibrary.simpleMessage("状態ディレクトリ"),
     "tailscaleStatus": MessageLookupByLibrary.simpleMessage("ステータス"),
     "tailscaleUdp": MessageLookupByLibrary.simpleMessage("UDP"),
