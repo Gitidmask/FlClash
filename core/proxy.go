@@ -41,11 +41,25 @@ func lookupProxy(name string) constant.Proxy {
 }
 
 func adapterAs[T any](proxy constant.Proxy) (group T, ok bool) {
-	outbound, ok := proxy.(*adapter.Proxy)
+	parsedProxy, ok := proxy.(*adapter.Proxy)
 	if !ok {
 		return group, false
 	}
-	group, ok = outbound.ProxyAdapter.(T)
+	proxyAdapter := parsedProxy.ProxyAdapter
+	for {
+		unwrapper, ok := proxyAdapter.(interface {
+			UnwrapProxyAdapter() constant.ProxyAdapter
+		})
+		if !ok {
+			break
+		}
+		next := unwrapper.UnwrapProxyAdapter()
+		if next == proxyAdapter {
+			break
+		}
+		proxyAdapter = next
+	}
+	group, ok = proxyAdapter.(T)
 	return group, ok
 }
 
